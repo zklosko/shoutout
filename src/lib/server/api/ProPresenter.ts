@@ -3,7 +3,7 @@ import type { ProPresenterSettings } from '$lib/server/db/integration-settings';
 
 export class ProPresenterDriver extends BaseDriver<ProPresenterSettings> {
 	async healthCheck(): Promise<boolean> {
-		const result = await this.executeCommand('/v1/version', 'GET');
+		const result = await this.executeCommand('/version', 'GET');
 		return result.ok;
 	}
 
