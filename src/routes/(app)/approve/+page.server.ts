@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import { requests } from '$lib/server/db/schema';
 import { and, eq, desc } from 'drizzle-orm';
+import { sendChildNumber } from '$lib/server/api';
 import type { Actions, PageServerLoad } from './$types';
 import { logEvent } from '$lib/server/log';
 
@@ -37,6 +38,22 @@ export const actions: Actions = {
 		if (result.changes === 0) {
 			return fail(409, { error: 'Someone already handled this request.' });
 		}
+
+		const row = await db.select().from(requests).where(eq(requests.id, id)).get();
+		if (!row) return fail(404, { error: 'Request not found.' });
+
+		const results = await sendChildNumber(row.childNumber, row.note);
+		if (results.length === 0) {
+			await db.update(requests).set({ status: 'Failed' }).where(eq(requests.id, id));
+			return fail(400, { error: 'No display services are configured. Set one up in Settings.' });
+		}
+
+		const failures = results.filter((r) => !r.success);
+		if (failures.length === results.length) {
+			await db.update(requests).set({ status: 'Failed' }).where(eq(requests.id, id));
+			return fail(502, { error: `Send failed: ${failures.map((f) => `${f.service} (${f.error})`).join(', ')}` });		}
+
+		await db.update(requests).set({ status: 'Sent' }).where(eq(requests.id, id));
 
 		// Log approval of request
 		await logEvent({
