@@ -1,22 +1,33 @@
-# Use the Node alpine official image
-# https://hub.docker.com/_/node
-FROM node:lts-alpine
+# Dependencies
+FROM node:lts-alpine AS deps
 
-# Create and change to the app directory.
 WORKDIR /app
 
-# Copy the files to the container image
-COPY package.json ./
-COPY yarn.lock ./
-
-# Install packages
+COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-# Copy local code to the container image.
+# Build stage
+FROM node:lts-alpine AS builder
+
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json yarn.lock ./
 COPY . ./
 
-# Build the app.
-RUN npm run build
+RUN yarn build
 
-# Serve the app
-CMD ["npm", "run", "start"]
+# Production
+FROM node:lts-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile --production \
+    && yarn cache clean
+
+COPY --from=builder /app/build ./build
+
+EXPOSE 5173
+CMD ["node", "build"]
