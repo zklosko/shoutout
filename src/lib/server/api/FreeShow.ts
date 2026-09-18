@@ -1,7 +1,6 @@
 import { BaseDriver, type SendResult } from './base';
-import type { FreeShowSettings } from '$lib/server/db/integration-settings';
 
-export class FreeShowDriver extends BaseDriver<FreeShowSettings> {
+export class FreeShowDriver extends BaseDriver {
 	async healthCheck(): Promise<boolean> {
 		// TODO: confirm a real health/ping action ID — using a harmless
 		// read-only action if one exists, rather than assuming reachability.

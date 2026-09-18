@@ -1,10 +1,8 @@
 export interface Target {
-	id: string;
-	label: string;
+	type: string;
 	host: string;
 	port: number;
 	enabled: boolean;
-	settings: unknown; // raw JSON blob — parsed into TSettings before it reaches a driver
 }
 
 export interface SendResult {
@@ -30,14 +28,14 @@ export interface NetworkResponse<T = unknown> {
  * before the driver is ever constructed. See the factory function; that's
  * the one place that does the DB row -> typed driver translation.
  */
-export abstract class BaseDriver<TSettings> {
-	protected target: Target;
-	protected settings: TSettings;
+export abstract class BaseDriver {
+	protected host: string;
+	protected port: number;
 	protected timeoutMs = 5000;
 
-	constructor(target: Target, settings: TSettings) {
-		this.target = target;
-		this.settings = settings;
+	constructor(host: string, port: number) {
+		this.host = host;
+		this.port = port;
 	}
 
 	/** Define your own health/version endpoint. */
@@ -95,6 +93,6 @@ export abstract class BaseDriver<TSettings> {
 	}
 
 	protected getBaseUrl(): string {
-		return `http://${this.target.host}:${this.target.port}`;
+		return `http://${this.host}:${this.port}`;
 	}
 }

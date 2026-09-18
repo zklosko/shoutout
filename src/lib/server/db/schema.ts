@@ -21,18 +21,30 @@ export const requests = sqliteTable('requests', {
 });
 
 export const integrations = sqliteTable('integrations', {
-	id: text('id')
+	type: text('type', { enum: ['propresenter', 'companion', 'freeshow'] })
 		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	label: text('label').notNull(),
-	type: text('type', { enum: ['propresenter', 'companion', 'freeshow'] }).notNull(),
+		.notNull(),
 	host: text('host').notNull(),
 	port: integer('port').notNull(),
-	settings: text('settings', { mode: 'json' }).notNull().default('{}'),
-	enabled: integer('enabled', { mode: 'boolean' }).notNull().default(true),
-	createdAt: integer('created_at', { mode: 'timestamp' })
-		.notNull()
-		.$defaultFn(() => new Date())
+	enabled: integer('enabled', { mode: 'boolean' }).notNull().default(true)
+});
+
+export const companionSettings = sqliteTable('companion_settings', {
+	type: text('id').primaryKey().default('companion'),
+	page: integer().notNull().default(1),
+	row: integer().notNull().default(0),
+	col: integer().notNull().default(0),
+	variable: text()
+});
+
+export const propresenterSettings = sqliteTable('propresenter_settings', {
+	id: text('id').primaryKey().default('propresenter'),
+	messageUuid: text(),
+	messageName: text(),
+	tokenUuid: text(),
+	tokenName: text(),
+	themeUuid: text(),
+	themeName: text()
 });
 
 export const auditLog = sqliteTable('audit_log', {

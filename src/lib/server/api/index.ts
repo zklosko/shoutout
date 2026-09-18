@@ -1,28 +1,28 @@
-import { db } from '$lib/server/db';
-import { integrations } from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
-import { createDriver } from './factory';
+import { CompanionDriver } from './Companion';
+import type { SendResult } from './base';
 
-type SendResult = {
-	targetId: string;
-	targetLabel: string;
-	success: boolean;
-	error?: string;
+export type TargetSendResult = SendResult & {
+	service: string;
 };
 
-export async function sendChildNumberToAllTargets(
+/**
+ * Sends a child number (and note) to every configured and enabled service
+ */
+export async function sendChildNumber(
 	childNumber: string,
 	note: string | null
-): Promise<SendResult[]> {
-	const targets = await db.select().from(integrations).where(eq(integrations.enabled, true));
+): Promise<TargetSendResult[]> {
+	const drivers = [
+		{ service: 'Companion', driver: await CompanionDriver.load() }
+		// ProPresenter and Freeshow drivers go here later
+	];
 
-	const results = await Promise.all(
-		targets.map(async (row): Promise<SendResult> => {
-			const driver = createDriver(row);
-			const { success, error } = await driver.sendChildNumber(childNumber, note);
-			return { targetId: row.id, targetLabel: row.label, success, error };
+	const active = drivers.filter((d) => d.driver !== null);
+
+	return Promise.all(
+		active.map(async ({ service, driver }) => {
+			const result = await driver!.sendChildNumber(childNumber, note);
+			return { service, ...result };
 		})
 	);
-
-	return results;
 }

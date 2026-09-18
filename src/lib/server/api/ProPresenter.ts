@@ -1,7 +1,6 @@
 import { BaseDriver, type SendResult } from './base';
-import type { ProPresenterSettings } from '$lib/server/db/integration-settings';
 
-export class ProPresenterDriver extends BaseDriver<ProPresenterSettings> {
+export class ProPresenterDriver extends BaseDriver {
 	async healthCheck(): Promise<boolean> {
 		const result = await this.executeCommand('/version', 'GET');
 		return result.ok;
