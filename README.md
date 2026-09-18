@@ -2,7 +2,13 @@
 
 Shoutout enables easier communication between childcare and production teams for churches while searching for parents during behavioral incidents.
 
-Shoutout includes integrations with ProPresenter and Bitfocus Companion, allowing production staff to push child codes to screens in auditoriums and sanctuaries without interrupting slides/media volunteers.
+Shoutout integrates with church presentation software and Bitfocus Companion, allowing production staff to push child codes to screens in auditoriums and sanctuaries without interrupting slides/media volunteers.
+
+This project under development. The following features are on the v1.0 roadmap:
+
+- Full integration with ProPresenter, Companion, and Freeshow/APlay Pro
+- Docker and Raspberry Pi images for easy deployment
+- Fully written documentation for systems administrators
 
 ## Getting Started
 
