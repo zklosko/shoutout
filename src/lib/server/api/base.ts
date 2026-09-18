@@ -82,9 +82,9 @@ export abstract class BaseDriver {
 
 			if (text) {
 				try {
-					parsedBody = JSON.parse(text) as TResponse
+					parsedBody = JSON.parse(text) as TResponse;
 				} catch {
-					parsedBody = text as unknown as TResponse
+					parsedBody = text as unknown as TResponse;
 				}
 			}
 			return { ok: true, status: res.status, body: parsedBody };
