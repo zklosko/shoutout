@@ -1,9 +1,0 @@
-services:
-  shoutout-node:
-    build: ./
-  caddy:
-    image: caddy
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-    ports:
-      - 80:80

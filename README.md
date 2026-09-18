@@ -12,13 +12,13 @@ This project under development. The following features are on the v1.0 roadmap:
 
 ## Getting Started
 
-### Docker
+### NPM Install
 
-Coming soonish(TM).
+Coming soonish(TM)?
 
 ### Raspberry Pi Images
 
-Coming kindasoonish(TM). Expecting hardware requirements to be a Raspberry Pi 4, 5, or Zero 2W. Strongly recommend a hardwired network connection.
+Coming notverysoonish(TM). Expecting hardware requirements to be a Raspberry Pi 4, 5, or Zero 2W. Strongly recommend a hardwired network connection.
 
 ### Run from source
 
