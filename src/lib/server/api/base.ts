@@ -78,7 +78,15 @@ export abstract class BaseDriver {
 			// Some endpoints return 204 with no body — guard against parsing
 			// empty responses as JSON.
 			const text = await res.text();
-			const parsedBody = text ? (JSON.parse(text) as TResponse) : undefined;
+			let parsedBody: TResponse | undefined;
+
+			if (text) {
+				try {
+					parsedBody = JSON.parse(text) as TResponse
+				} catch {
+					parsedBody = text as unknown as TResponse
+				}
+			}
 			return { ok: true, status: res.status, body: parsedBody };
 		} catch (err) {
 			clearTimeout(timeout);
