@@ -1,32 +1,80 @@
+import { eq } from 'drizzle-orm';
+import { db } from '../db';
+import { integrations, propresenterSettings } from '../db/schema';
 import { BaseDriver, type SendResult } from './base';
 
 export class ProPresenterDriver extends BaseDriver {
+	#messageUuid: string
+	#messageName: string
+	#tokenUuid: string
+	#tokenName: string
+	#themeUuid: string
+	#themeName: string
+
+	private constructor(host: string, port: number, messageUuid: string, messageName: string, tokenUuid: string, tokenName: string, themeUuid: string, themeName: string) {
+		super(host, port)
+		this.#messageUuid = messageUuid
+		this.#messageName = messageName
+		this.#tokenUuid = tokenUuid
+		this.#tokenName = tokenName
+		this.#themeUuid = themeUuid
+		this.#themeName = themeName
+	}
+
+	static async load(): Promise<ProPresenterDriver | null> {
+		const connection = await db
+			.select()
+			.from(integrations)
+			.where(eq(integrations.type, 'propresenter'))
+			.get();
+		if (!connection || !connection.enabled || !connection.host || !connection.port) {
+			return null;
+		}
+
+		const settings = await db
+			.select()
+			.from(propresenterSettings)
+			.where(eq(propresenterSettings.type, 'propresenter'))
+			.get();
+
+		return new ProPresenterDriver(
+			connection.host,
+			connection.port,
+			settings?.messageUuid ?? '',
+			settings?.messageName ?? '',
+			settings?.tokenUuid ?? '',
+			settings?.tokenName ?? '',
+			settings?.themeUuid ?? '',
+			settings?.themeName ?? ''
+		)
+	}
+
 	async healthCheck(): Promise<boolean> {
 		const result = await this.executeCommand('/version', 'GET');
 		return result.ok;
 	}
 
 	async sendChildNumber(childNumber: string, note: string | null): Promise<SendResult> {
-		if (!this.settings.messageUuid || !this.settings.tokenUuid) {
+		if (!this.#messageUuid || !this.#tokenUuid) {
 			return {
 				success: false,
-				error: `${this.target.label} is missing message/token config — set it up in Settings → Connections.`
+				error: `ProPresenter is missing message/token config — set it up in Settings → Connections.`
 			};
 		}
 
 		const tokens = [
-			{ name: this.settings.tokenName, uuid: this.settings.tokenUuid, text: { text: childNumber } }
+			{ name: this.#tokenName, uuid: this.#tokenUuid, text: { text: childNumber } }
 			// TODO: second token here if `note` should show separately.
 		];
 
 		const updateResult = await this.executeCommand(
-			`/v1/messages/${this.settings.messageUuid}`,
+			`/v1/messages/${this.#messageUuid}`,
 			'PUT',
 			{
-				id: { name: this.settings.messageName, uuid: this.settings.messageUuid, index: 0 },
-				message: `Text {${this.settings.tokenName}}`, // TODO: match your actual Message template string
+				id: { name: this.#messageName, uuid: this.#messageUuid, index: 0 },
+				message: `Text {${this.#tokenName}}`, // TODO: match your actual Message template string
 				tokens,
-				theme: { name: this.settings.themeName, uuid: this.settings.themeUuid, index: 0 },
+				theme: { name: this.#themeName, uuid: this.#themeUuid, index: 0 },
 				visible_on_network: true,
 				is_active: false
 			}
@@ -37,7 +85,7 @@ export class ProPresenterDriver extends BaseDriver {
 		}
 
 		const triggerResult = await this.executeCommand(
-			`/v1/messages/${this.settings.messageUuid}/trigger`,
+			`/v1/messages/${this.#messageUuid}/trigger`,
 			'POST',
 			tokens.map((t) => ({ name: t.name, text: t.text }))
 		);
@@ -48,7 +96,7 @@ export class ProPresenterDriver extends BaseDriver {
 		return { success: true };
 	}
 
-	/** Used by the settings UI's "Load from ProPresenter" dropdown feature. */
+	/** TODO: needs to be implemented again. */
 	async listOptions() {
 		const messagesListResult = await this.executeCommand<{ name: string; uuid: string }[]>(
 			'/v1/messages',

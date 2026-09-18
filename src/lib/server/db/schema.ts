@@ -38,7 +38,7 @@ export const companionSettings = sqliteTable('companion_settings', {
 });
 
 export const propresenterSettings = sqliteTable('propresenter_settings', {
-	id: text('id').primaryKey().default('propresenter'),
+	type: text('id').primaryKey().default('propresenter'),
 	messageUuid: text(),
 	messageName: text(),
 	tokenUuid: text(),
