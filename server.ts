@@ -1,6 +1,8 @@
 import fastify from "fastify";
 import fastifyStatic from "@fastify/static";
+import fastifyView from "@fastify/view";
 import path from "node:path";
+import Handlebars from "handlebars";
 
 const server = fastify();
 const __dirname = import.meta.dirname;
@@ -9,6 +11,12 @@ await server.register(fastifyStatic, {
   root: path.join(__dirname, "..", "public"),
   prefix: "/",
 });
+
+await server.register(fastifyView, {
+    engine: {
+        handlebars: Handlebars,
+    }
+})
 
 server.get("/api/health", (request, response) => {
   response.send({
