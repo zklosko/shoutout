@@ -3,20 +3,28 @@ import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import path from "node:path";
 import Handlebars from "handlebars";
+import { dashboardRoutes } from "./src/routes/dashboard.js";
+import { settingsRoutes } from "./src/routes/settings.js";
 
 const server = fastify();
 const __dirname = import.meta.dirname;
 
 await server.register(fastifyStatic, {
-  root: path.join(__dirname, "..", "public"),
+  root: path.join(__dirname, "public"),
   prefix: "/",
+  constraints: {},
 });
 
 await server.register(fastifyView, {
     engine: {
-        handlebars: Handlebars,
-    }
+      handlebars: Handlebars,
+    },
+    root: path.join(__dirname, 'src/views'),
+    layout: "/layouts/base.hbs"
 })
+
+server.register(dashboardRoutes, {prefix: '/'})
+server.register(settingsRoutes, {prefix: '/settings'})
 
 server.get("/api/health", (request, response) => {
   response.send({
