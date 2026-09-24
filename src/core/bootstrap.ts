@@ -50,7 +50,7 @@ export async function bootstrap(): Promise<BootstrapConfig> {
     }
 
     let buttons = await db.select().from(companionButtonsTable).all()
-    if (!buttons) {
+    if (buttons.length === 0) {
         console.log("Creating buttons table...")
         const inserted = await db.insert(companionButtonsTable).values({
             page: BLANK_CONNECTION.page,
