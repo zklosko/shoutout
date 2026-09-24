@@ -1,7 +1,10 @@
 import type { FastifyInstance } from "fastify";
+import { db } from "../db/index.js";
+import { childCodesTable } from "../db/schema.js";
 
 export async function dashboardRoutes(fastify: FastifyInstance, options: {}) {
     fastify.get("/", async (request, response) => {
-        return response.viewAsync('dashboard.hbs', {})
+        const childCodes = await db.select().from(childCodesTable).all()
+        return response.viewAsync('dashboard.hbs', { childCodes })
     })
 }

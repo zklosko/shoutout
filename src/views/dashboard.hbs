@@ -2,30 +2,36 @@
 
 <div>
     <h2>Submit a new child number</h2>
-    <form>
-        <input type="text">
-        <input type="text">
-        <button>Submit</button>
+    <form hx-post="/requests/new" hx-boost="true" hx-target="#new-child-result" hx-swap="innerHTML">
+        <label for="childCode">Child Code</label>
+        <input type="text" name="childCode" placeholder="123">
+        <label for="note">Note (optional)</label>
+        <input type="text" name="note" placeholder="Needs Mom to come get him">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
     </form>
+    <div id="new-child-result"></div>
 </div>
 
 <div>
     <h2>Submissions</h2>
     <table>
         <thead>
-            <td>Child number</td>
-            <td>Note</td>
-            <td>Actions</td>
+            <th>Child number</th>
+            <th>Note</th>
+            <th>Actions</th>
         </thead>
         <tbody>
+            {{#each childCodes}}
             <tr>
-                <td>420</td>
-                <td>Smells funny...</td>
+                <td>{{ childCode }}</td>
+                <td>{{ note }}</td>
                 <td>
                     <button>Approve</button>
                     <button>Reject</button>
                 </td>
             </tr>
+            {{/each}}
         </tbody>
     </table>
 </div>

@@ -7,6 +7,8 @@ import { dashboardRoutes } from "./src/routes/dashboard.js";
 import { settingsRoutes } from "./src/routes/settings.js";
 import { bootstrap } from "./src/core/bootstrap.js";
 import { CompanionDriver } from "./src/core/Companion.js";
+import { requestsRoutes } from "./src/routes/requests.js";
+import fastifyFormbody from "@fastify/formbody";
 
 const server = fastify();
 const __dirname = import.meta.dirname;
@@ -25,8 +27,11 @@ await server.register(fastifyView, {
     layout: "/layouts/base.hbs"
 })
 
+server.register(fastifyFormbody)
+
 server.register(dashboardRoutes, {prefix: '/'})
 server.register(settingsRoutes, {prefix: '/settings'})
+server.register(requestsRoutes, {prefix: '/requests'})
 
 server.get("/api/health", (request, response) => {
   response.send({
