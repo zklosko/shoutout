@@ -18,9 +18,8 @@ jobs:
       - run: npm run build
       - name: Package release
         run: |
-          mkdir -p release
-          cp -r dist public package.json package-lock.json release/
-          tar -czf shoutout.tar.gz -C release .
+          cp -r package.json package-lock.json dist/
+          tar -czf shoutout.tar.gz -C dist .
       - uses: softprops/action-gh-release@v2
         with:
           files: shoutout.tar.gz
