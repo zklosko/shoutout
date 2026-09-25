@@ -1,0 +1,9 @@
+<tr id="code-{{ childCode }}">
+  <td>{{ childCode }}</td>
+  <td>{{ note }}</td>
+  <td id="status-{{ childCode }}">{{ status }}</td>
+  <td>
+    <button class="button is-primary" hx-post="/request/approve/{{ childCode }}" hx-target="#status-{{ childCode }}" hx-swap="outerHTML">Approve</button>
+    <button class="button is-danger" hx-post="/request/reject/{{ childCode }}" hx-target="#status-{{ childCode }}" hx-swap="outerHTML">Reject</button>
+  </td>
+</tr>

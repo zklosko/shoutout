@@ -9,6 +9,7 @@ import { bootstrap } from "./src/core/bootstrap.js";
 import companionPlugin from "./src/core/Companion.js";
 import { requestRoutes } from "./src/routes/request.js";
 import fastifyFormbody from "@fastify/formbody";
+import { loadPartials } from "./src/core/load-partials.js";
 
 const server = fastify();
 const __dirname = import.meta.dirname;
@@ -26,6 +27,8 @@ await server.register(fastifyView, {
     root: path.join(__dirname, 'src/views'),
     layout: "/layouts/base.hbs"
 })
+
+await loadPartials(path.join(__dirname, "src/views/partials"))
 
 server.register(fastifyFormbody)
 
