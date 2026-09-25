@@ -14,6 +14,12 @@ type SettingsParams = {
     variableName: string
 }
 
+function definedFields<T extends object>(obj: T): Partial<T> {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([, v]) => v !== undefined)
+    ) as Partial<T>
+}
+
 export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
     fastify.get("/", async (request, response) => {
         const settings = await db.select().from(settingsTable).where(eq(settingsTable.id, "settings")).get()
@@ -31,10 +37,30 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
     fastify.post<{ Body: Partial<SettingsParams> }>("/", async (request, response) => {
         const { infoText, port, companionHost, companionPort, page, row, col, variableName } = request.body
 
-        const settingsQuery = await db.update(settingsTable).set({ infoText: infoText, port: port}).where(eq(settingsTable.id, "settings")).returning().get()
-        const connectionsQuery = await db.update(connectionsTable).set({ host: companionHost, port: companionPort}).where(eq(connectionsTable.type, "companion")).returning().get()
-        const buttonsQuery = await db.update(companionButtonsTable).set({ page: page, row: row, col: col, variableName: variableName}).where(eq(companionButtonsTable.id, 1)).returning().get()
-        
+        try {
+            await db.update(settingsTable).set({ infoText: infoText, port: port}).where(eq(settingsTable.id, "settings")).returning().get()
+            await db.update(connectionsTable).set({ host: companionHost, port: companionPort}).where(eq(connectionsTable.type, "companion")).returning().get()
+            
+            const buttonsUpdate = definedFields({ page, row, col, variableName })
+
+            const buttonsQuery = Object.keys(buttonsUpdate).length
+                ? await db.update(companionButtonsTable).set(buttonsUpdate).where(eq(companionButtonsTable.id, 1)).returning().get()
+                : await db.select().from(companionButtonsTable).where(eq(companionButtonsTable.id, 1)).get()
+
+            if (companionHost !== undefined && companionPort !== undefined && buttonsQuery) {
+                fastify.companion.updateSettings(companionHost, companionPort, [
+                    {
+                        page: buttonsQuery.page,
+                        row: buttonsQuery.row,
+                        col: buttonsQuery.col,
+                        variableName: buttonsQuery.variableName
+                    }
+                ])
+            }
+        } catch (err) {
+            return response.code(400).send("Could not update database")
+        }
+
         response.send({
             ok: true,
         })

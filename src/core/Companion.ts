@@ -2,7 +2,6 @@ import fp from 'fastify-plugin'
 import type { FastifyPluginAsync } from 'fastify'
 
 export type CompanionButton = {
-    id: number
     page: number
     row: number
     col: number
