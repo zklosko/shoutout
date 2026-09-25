@@ -19,6 +19,7 @@
         <thead>
             <th>Child number</th>
             <th>Note</th>
+            <th>Status</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -26,9 +27,10 @@
             <tr>
                 <td>{{ childCode }}</td>
                 <td>{{ note }}</td>
+                <td>{{ status }}</td>
                 <td>
-                    <button>Approve</button>
-                    <button>Reject</button>
+                    <button hx-post="/request/approve/{{ childCode }}">Approve</button>
+                    <button hx-post="/request/reject/{{ childCode }}">Reject</button>
                 </td>
             </tr>
             {{/each}}
