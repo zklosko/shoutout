@@ -1,21 +1,20 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const childCodesTable = sqliteTable("child_codes", {
-    id: int().primaryKey({ autoIncrement: true}),
-    childCode: text().notNull(),
-    note: text(),
+    childCode: text().primaryKey(),
+    note: text().notNull().$default(() => ""),
     status: text().notNull().$default(() => "submitted")
 })
 
 export const settingsTable = sqliteTable("settings", {
-    id: text().notNull().$default(() => "settings"),
+    id: text().primaryKey().$default(() => "settings"),
     infoText: text().notNull().$default(() => ""),
     approverPassword: text().notNull(),
     port: int().notNull().$default(() => 8080)
 })
 
 export const connectionsTable = sqliteTable("connections", {
-    type: text().notNull().$default(() => "companion"),
+    type: text().primaryKey().$default(() => "companion"),
     host: text().notNull(),
     port: int().notNull().$default(() => 8000)
 })
