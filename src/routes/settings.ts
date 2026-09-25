@@ -33,7 +33,8 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
         return response.viewAsync('settings.hbs', { 
             settings: settings,
             connections: connections,
-            buttons: buttons 
+            buttons: buttons,
+            isAuthenticated: request.isAuthenticated()
         })
     }),
     fastify.post<{ Body: Partial<SettingsParams> }>("/", async (request, response) => {

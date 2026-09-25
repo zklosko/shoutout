@@ -18,7 +18,11 @@
                 <div class="level-right">
                     <p class="level-item"><a href="/">Dashboard</a></p>
                     <p class="level-item"><a href="/settings">Settings</a><p>
+                    {{#if isAuthenticated}}
+                    <p class="level-item"><button class="button is-primary" hx-post="/logout">Log out</button></p>
+                    {{else}}
                     <p class="level-item"><a href="/login"><button class="button is-primary">Log in</button></a></p>
+                    {{/if}}
                 </div>
             </nav>
 

@@ -36,7 +36,7 @@
         </thead>
         <tbody>
             {{#each childCodes}}
-                {{> code-row}}
+                {{> code-row auth=../isAuthenticated }}
             {{/each}}
         </tbody>
     </table>
