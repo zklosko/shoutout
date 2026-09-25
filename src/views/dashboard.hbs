@@ -1,21 +1,33 @@
-<h1>Dashboard</h1>
+<section class="section">
+    <h1 class="title">Dashboard</h1>
+    <h2 class="subtitle">Submit a new child number</h2>
+    <form hx-post="/request/new" hx-target="#new-child-result" hx-swap="innerHTML">
+        <div class="field">
+            <label for="childCode">Child Code</label>
+            <div class="control">
+                <input class="input" type="text" name="childCode" placeholder="123">
+            </div>
+        </div>
+        <div class="field">
+            <label for="note">Note (optional)</label>
+            <div class="control">
+                <input class="input" type="text" name="note" placeholder="Mom needs to come get him">
+            </div>
+        </div>
 
-<div>
-    <h2>Submit a new child number</h2>
-    <form hx-post="/requests/new" hx-boost="true" hx-target="#new-child-result" hx-swap="innerHTML">
-        <label for="childCode">Child Code</label>
-        <input type="text" name="childCode" placeholder="123">
-        <label for="note">Note (optional)</label>
-        <input type="text" name="note" placeholder="Needs Mom to come get him">
-        <button type="submit">Submit</button>
-        <button type="reset">Reset</button>
+        <div class="field is-grouped">
+            <p class="control">
+                <button class="button is-primary" type="submit">Submit</button>
+            </p>
+            <p class="control">
+                <button class="button is-secondary" type="reset">Reset</button>
+            </p>
+        </div>
     </form>
     <div id="new-child-result"></div>
-</div>
 
-<div>
-    <h2>Submissions</h2>
-    <table>
+    <h2 class="subtitle mt-4">Submissions</h2>
+    <table class="table is-fullwidth is-hoverable">
         <thead>
             <th>Child number</th>
             <th>Note</th>
@@ -24,16 +36,8 @@
         </thead>
         <tbody>
             {{#each childCodes}}
-            <tr>
-                <td>{{ childCode }}</td>
-                <td>{{ note }}</td>
-                <td>{{ status }}</td>
-                <td>
-                    <button hx-post="/request/approve/{{ childCode }}">Approve</button>
-                    <button hx-post="/request/reject/{{ childCode }}">Reject</button>
-                </td>
-            </tr>
+                {{> code-row}}
             {{/each}}
         </tbody>
     </table>
-</div>
+</section>

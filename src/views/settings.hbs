@@ -1,39 +1,58 @@
-<h1>Settings</h1>
+<section class="section">
+    <h1 class="title">Settings</h1>
 
-<form hx-post="/settings" hx-boost="true">
-    <h2>General</h2>
-    <label for="orgName">Organization Name</label>
-    <input type="text" name="orgName" placeholder="organization name">
-    <label for="infoText">General information text</label>
-    <input type="text" name="infoText" placeholder="info message" value="{{ settings.infoText }}">
-    <label for="port">Server Port</label>
-    <input type="number" name="port" placeholder="8080" value="{{ settings.port }}">
+    <form hx-post="/settings" hx-boost="true">
+        <h2 class="subtitle">General</h2>
+        <div class="field">
+            <label for="infoText">General information text</label>
+            <div class="control">
+                <input class="input" type="text" name="infoText" placeholder="info message" value="{{ settings.infoText }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="port">Server Port</label>
+            <div class="control">
+                <input class="input" type="number" name="port" placeholder="8080" value="{{ settings.port }}">
+            </div>
+        </div>
 
-    <h2>Companion</h2>
-    <label for="companionHost">IP Address</label>
-    <input type="text" name="companionHost" placeholder="0.0.0.0" value="{{ connections.host }}">
-    <label for="companionPort">Port</label>
-    <input type="number" name="companionPort" placeholder="8000" value="{{ connections.port }}">
+        <hr>
+        
+        <h2 class="subtitle">Companion</h2>
+        <div class="field">
+            <label for="companionHost">IP Address</label>
+            <div class="control">
+                <input class="input" type="text" name="companionHost" placeholder="0.0.0.0" value="{{ connections.host }}">
+            </div>
+        </div>
+        <div class="field">
+            <label for="companionPort">Port</label>
+            <div class="control">
+                <input class="input" type="number" name="companionPort" placeholder="8000" value="{{ connections.port }}">
+            </div>
+        </div>
+        
 
-    <table>
-        <thead>
-            <th>Slot</th>
-            <th>Page</th>
-            <th>Row</th>
-            <th>Col</th>
-            <th>Custom Variable</th>
-        </thead>
-        <tbody>
-            {{#each buttons}}
-            <tr>
-                <td>{{ id }}</td>
-                <td><input type="number" name="page" placeholder="1" value="{{ page }}"></td>
-                <td><input type="number" name="row" placeholder="0" value="{{ row }}"></td>
-                <td><input type="number" name="col" placeholder="0" value="{{ col }}"></td>
-                <td><input type="text" name="variableName" placeholder="shoutoutMessage1" value="{{ variableName }}"></td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-    <button type="submit">Submit</button>
-</form>
+        <table class="table is-fullwidth">
+            <thead>
+                <th>Slot</th>
+                <th>Page</th>
+                <th>Row</th>
+                <th>Column</th>
+                <th>Custom Variable</th>
+            </thead>
+            <tbody>
+                {{#each buttons}}
+                <tr>
+                    <td>{{ id }}</td>
+                    <td><input class="input" type="number" name="page" placeholder="1" value="{{ page }}"></td>
+                    <td><input class="input" type="number" name="row" placeholder="0" value="{{ row }}"></td>
+                    <td><input class="input" type="number" name="col" placeholder="0" value="{{ col }}"></td>
+                    <td><input class="input" type="text" name="variableName" placeholder="shoutoutMessage1" value="{{ variableName }}"></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <button class="button is-primary" type="submit">Submit</button>
+    </form>
+</section>

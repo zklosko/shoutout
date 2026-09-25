@@ -4,21 +4,27 @@
         <title>Shoutout!</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {{!-- <link rel="stylesheet" href="/pico.min.css"> --}}
-        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+        {{!-- <link rel="stylesheet" href="style.css" /> --}}
     </head>
     <body>
-        <nav>
-            <ul>
-                <li><strong>Shoutout</strong></li>
-            </ul>
-            <ul>
-                <li><a href="/">Dashboard</a></li>
-                <li><a href="/settings">Settings</a></li>
-                <li><button class="secondary">Log in</button></li>
-            </ul>
-        </nav>
-        {{{body}}}
+        <div class="container is-max-desktop">
+            <nav class="level py-4">
+                <div class="level-left">
+                    <div class="level-item">
+                        <p class="subtitle is-5">Shoutout</p>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <p class="level-item"><a href="/">Dashboard</a></p>
+                    <p class="level-item"><a href="/settings">Settings</a><p>
+                    <p class="level-item"><button class="button is-primary">Log in</button></p>
+                </div>
+            </nav>
+
+            {{{body}}}
+
+        </div>
     </body>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
 </html>
