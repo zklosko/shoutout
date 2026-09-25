@@ -1,6 +1,5 @@
-import { eq } from "drizzle-orm"
-import { db } from "../db/index.js"
-import { companionButtonsTable, connectionsTable } from "../db/schema.js"
+import fp from 'fastify-plugin'
+import type { FastifyPluginAsync } from 'fastify'
 
 export type CompanionButton = {
     id: number
@@ -10,7 +9,19 @@ export type CompanionButton = {
     variableName: string
 }
 
-export class CompanionDriver {
+interface CompanionDriverOptions {
+    host: string
+    port: number
+    buttons: CompanionButton[]
+}
+
+declare module 'fastify' {
+    interface FastifyInstance {
+        companion: CompanionDriver
+    }
+}
+
+class CompanionDriver {
     host: string
     port: number
     #buttons: CompanionButton[]
@@ -21,24 +32,44 @@ export class CompanionDriver {
         this.#buttons = buttons
     }
 
-    healthCheck(): Boolean {
-        return true // this doesn't exist, as far as I know
-    }
-
-    async updateConnectionSettings(host: string, port: number) {
+    updateSettings(host: string, port: number, buttons: CompanionButton[]) {
         this.host = host
         this.port = port
-
-        await db.update(connectionsTable).set({ host, port}).where(eq(connectionsTable.type, "companion"))
-    }
-
-    async updateButtonSettings(buttons: CompanionButton[]) {
         this.#buttons = buttons
-
-        // push new values to db
     }
 
-    send(childCode: string, note?: string) {
+    send(childCode: string, note?: string): { success: boolean, error: string | undefined } {
+        this.#buttons.forEach(async b => {
 
+            try {
+                await fetch(`http://${this.host}:${this.port}/api/custom-variable/${b.variableName}/value`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: childCode
+                })
+            } catch (err) {
+                return { success: false, error: err}
+            }
+
+            try {
+                await fetch(`http://${this.host}:${this.port}/api/location/${b.page}/${b.row}/${b.col}/press`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            } catch (err) {
+                return { success: false, error: err}
+            }
+
+        })
+
+		return { success: true, error: undefined };
     }
 }
+
+const companionPlugin: FastifyPluginAsync<CompanionDriverOptions> = async (fastify, opts) => {
+    const driver = new CompanionDriver(opts.host, opts.port, opts.buttons)
+
+    fastify.decorate('companion', driver)
+}
+
+export default fp(companionPlugin)

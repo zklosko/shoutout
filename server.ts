@@ -6,8 +6,8 @@ import Handlebars from "handlebars";
 import { dashboardRoutes } from "./src/routes/dashboard.js";
 import { settingsRoutes } from "./src/routes/settings.js";
 import { bootstrap } from "./src/core/bootstrap.js";
-import { CompanionDriver } from "./src/core/Companion.js";
-import { requestsRoutes } from "./src/routes/requests.js";
+import companionPlugin from "./src/core/Companion.js";
+import { requestRoutes } from "./src/routes/request.js";
 import fastifyFormbody from "@fastify/formbody";
 
 const server = fastify();
@@ -31,7 +31,7 @@ server.register(fastifyFormbody)
 
 server.register(dashboardRoutes, {prefix: '/'})
 server.register(settingsRoutes, {prefix: '/settings'})
-server.register(requestsRoutes, {prefix: '/requests'})
+server.register(requestRoutes, {prefix: '/request'})
 
 server.get("/api/health", (request, response) => {
   response.send({
@@ -42,7 +42,11 @@ server.get("/api/health", (request, response) => {
 
 // Startup db checks, get data needed to launch server
 const { port, companion } = await bootstrap()
-export const companionInstance = new CompanionDriver(companion.host, companion.port, companion.buttons)
+await server.register(companionPlugin, {
+  host: companion.host,
+  port: companion.port,
+  buttons: companion.buttons
+})
 
 // Launch server
 server.listen({ port: port, host: "0.0.0.0" }, (err, address) => {
