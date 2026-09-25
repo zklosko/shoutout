@@ -1,7 +1,7 @@
 <section class="section">
     <h1 class="title">Settings</h1>
 
-    <form hx-post="/settings" hx-boost="true">
+    <form hx-post="/settings">
         <h2 class="subtitle">General</h2>
         <div class="field">
             <label for="infoText">General information text</label>
@@ -35,7 +35,6 @@
 
         <table class="table is-fullwidth">
             <thead>
-                <th>Slot</th>
                 <th>Page</th>
                 <th>Row</th>
                 <th>Column</th>
@@ -44,7 +43,6 @@
             <tbody>
                 {{#each buttons}}
                 <tr>
-                    <td>{{ id }}</td>
                     <td><input class="input" type="number" name="page" placeholder="1" value="{{ page }}"></td>
                     <td><input class="input" type="number" name="row" placeholder="0" value="{{ row }}"></td>
                     <td><input class="input" type="number" name="col" placeholder="0" value="{{ col }}"></td>
