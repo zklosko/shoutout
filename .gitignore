@@ -5,3 +5,5 @@ config.json
 dist
 
 _*.md
+
+session-key binary

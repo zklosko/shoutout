@@ -1,0 +1,8 @@
+<form method="POST" action="/login" hx-boost="false">
+    {{#if error}}
+        <p class="is-warning">Invalid username or password.</p>
+    {{/if}}
+    <label>Username <input type="text" name="username" required></label>
+    <label>Password <input type="password" name="password" required></label>
+    <button type="submit">Log in</button>
+</form>

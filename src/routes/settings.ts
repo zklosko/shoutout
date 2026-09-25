@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import { db } from "../db/index.js";
 import { companionButtonsTable, connectionsTable, settingsTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
+import { requireAuth } from "../hooks/require-auth.js";
 
 type SettingsParams = {
     infoText: string
@@ -21,6 +22,7 @@ function definedFields<T extends object>(obj: T): Partial<T> {
 }
 
 export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
+    fastify.addHook('preHandler', requireAuth)
     fastify.get("/", async (request, response) => {
         const settings = await db.select().from(settingsTable).where(eq(settingsTable.id, "settings")).get()
         const connections = await db.select().from(connectionsTable).where(eq(connectionsTable.type, "companion")).get()
