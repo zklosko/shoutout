@@ -9,28 +9,14 @@ Future releases aim to be compatible with Raspberry Pi 4/5/Zero 2W units, althou
 
 ## Getting Started
 
-Clone this repo and install dependencies using Node 22 or later.
+Clone this repo, install dependencies using Node 22 or later, and take it for a test drive. The database and admin login are created at first launch.
 
 ```bash
 git clone https://github.com/zklosko/shoutout.git
 nvm use 22
 npm ci
+npm run dev
 ```
-
-Shoutout requires an admin account to change settings or approve/reject requests. The setup process is manual while the project is in early stages of development.
-
-1. Create a `.env` file in the repo's directory with the following:
-
-```env
-DB_FILE_NAME=file:local.db
-AUTH_USER=admin  # <-- replace with your desired username
-AUTH_PASS_HASH=
-```
-
-2. Generate the password hash for your admin user with `npm run gen-password <yourpassword>`. Paste the long string into your `.env` file next to `AUTH_PASS_HASH=`.
-3. Generate a session key using `npm run gen-session-key` on Mac, Linux, or WSL, or `npm run gen-session-key-windows` on Windows.
-
-Run the server using `npm run dev`. The database will automatically populate on first run.
 
 ## Documentation
 
