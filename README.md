@@ -18,6 +18,8 @@ npm ci
 npm run dev
 ```
 
+See the [Companion setup guide](/docs/companion-setup.md) for integrating Shoutout with your Companion + ProPresenter setup.
+
 ## Documentation
 
 Further documentation can be found in the [docs directory](/docs/).
@@ -26,6 +28,6 @@ Further documentation can be found in the [docs directory](/docs/).
 
 - [ ] Integration with ProPresenter via. Bitfocus Companion
 - [ ] Multiple user accounts and user management
-- [ ] Setup script or wizard for fresh installs
+- [x] Setup script ~~or wizard~~ for fresh installs
 - [ ] NPX installer and/or Raspberry Pi image for easy deployment
 - [ ] Guides for users and systems administrators
