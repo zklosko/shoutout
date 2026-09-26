@@ -80,8 +80,10 @@ export async function bootstrap(): Promise<BootstrapConfig> {
     if (!inserted) throw new Error("Failed to save settings to database");
     settings = inserted;
 
-    console.log(
-      "\nCreated a new admin user account. The username is admin and the password is changeme. The password can be changed on the settings page of the web ui.\n",
+    console.log("\n" +
+      "Created a new admin user account.\n" +
+      "The username is admin and the password is changeme.\n" +
+      "The password can be changed on the settings page of the web ui.\n",
     );
   }
 
