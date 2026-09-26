@@ -1,5 +1,8 @@
-<section class="section">
+<div class="content">
     <h1 class="title">Dashboard</h1>
+    {{#if infoText}}
+        {{> message text=infoText}}
+    {{/if}}
     <h2 class="subtitle">Submit a new child number</h2>
     <form hx-post="/request/new" hx-target="#new-child-result" hx-swap="innerHTML">
         <div class="field">
@@ -40,4 +43,4 @@
             {{/each}}
         </tbody>
     </table>
-</section>
+</div>

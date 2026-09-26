@@ -1,7 +1,7 @@
-<section class="section">
+<div class="content">
   <h1 class="title">Settings</h1>
 
-  <form hx-post="/settings">
+  <form hx-post="/settings" hx-target="#new-child-result" hx-swap="innerHTML">
     <h2 class="subtitle">General</h2>
     <div class="field">
       <label for="infoText">General information text</label>
@@ -24,6 +24,7 @@
           name="port"
           placeholder="8080"
           value="{{settings.port}}"
+          disabled
         />
       </div>
     </div>
@@ -98,6 +99,13 @@
         {{/each}}
       </tbody>
     </table>
-    <button class="button is-primary" type="submit">Submit</button>
+    <div class="columns">
+      <div class="column is-1">
+        <button class="button is-primary" type="submit">Submit</button>
+      </div>
+      <div class="column">
+        <p id="new-child-result" class="is-size-6 has-text-dark px-4 py-1"></p>
+      </div>
+    </div>
   </form>
-</section>
+</div>
