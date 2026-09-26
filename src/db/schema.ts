@@ -1,4 +1,5 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { randomBytes } from "node:crypto";
 
 export const childCodesTable = sqliteTable("child_codes", {
   childCode: text().primaryKey(),
@@ -17,10 +18,20 @@ export const settingsTable = sqliteTable("settings", {
   infoText: text()
     .notNull()
     .$default(() => ""),
+  approverUsername: text().notNull(),
   approverPassword: text().notNull(),
   port: int()
     .notNull()
     .$default(() => 8080),
+});
+
+export const sessionsTable = sqliteTable("sessions", {
+  id: text()
+    .primaryKey()
+    .$default(() => "session"),
+  key: text()
+    .notNull()
+    .$default(() => randomBytes(32).toString("hex")),
 });
 
 export const connectionsTable = sqliteTable("connections", {

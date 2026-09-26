@@ -2,10 +2,14 @@ import { db } from "../db/index.js";
 import {
   companionButtonsTable,
   connectionsTable,
+  sessionsTable,
   settingsTable,
 } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import type { CompanionButton } from "./Companion.js";
+import { migrate } from "drizzle-orm/libsql/migrator";
+import { generateSaltForPassword } from "./auth.js";
+import { randomBytes } from "node:crypto";
 
 const BLANK_CONNECTION = {
   page: 1,
@@ -13,6 +17,8 @@ const BLANK_CONNECTION = {
   col: 0,
   variableName: "shoutoutVariable",
 };
+const USERNAME = "admin";
+const RAW_PASSWORD = "changeme";
 
 type BootstrapConfig = {
   port: number;
@@ -21,31 +27,62 @@ type BootstrapConfig = {
     port: number;
     buttons: CompanionButton[];
   };
+  sessionKey: string;
 };
 
 /** Check to see if needed database tables exist, and init with default values if they don't */
 export async function bootstrap(): Promise<BootstrapConfig> {
+  await migrate(db, { migrationsFolder: "./drizzle" });
+
+  let sessions = await db
+    .select()
+    .from(sessionsTable)
+    .where(eq(sessionsTable.id, "sessions"))
+    .get();
+  if (!sessions) {
+    console.log("No session key found. Creating new one...");
+    const inserted = await db
+      .insert(sessionsTable)
+      .values({
+        id: "sessions",
+        key: randomBytes(32).toString("hex"),
+      })
+      .onConflictDoNothing()
+      .returning()
+      .get();
+
+    if (!inserted) throw new Error("Failed to save settings to database");
+    sessions = inserted;
+  }
+
   let settings = await db
     .select()
     .from(settingsTable)
     .where(eq(settingsTable.id, "settings"))
     .get();
   if (!settings) {
-    console.log("Could not retreive settings table from db. Creating new one.");
+    console.log(
+      "Could not retreive settings table from db. Creating new one...",
+    );
     const inserted = await db
       .insert(settingsTable)
       .values({
         id: "settings",
         infoText: "",
-        approverPassword: "changeme",
+        approverUsername: USERNAME,
+        approverPassword: await generateSaltForPassword(RAW_PASSWORD),
         port: 8080,
       })
       .onConflictDoNothing()
       .returning()
       .get();
 
-    if (inserted) throw new Error("Failed to save settings to database");
+    if (!inserted) throw new Error("Failed to save settings to database");
     settings = inserted;
+
+    console.log(
+      "\nCreated a new admin user account. The username is admin and the password is changeme. The password can be changed on the settings page of the web ui.\n",
+    );
   }
 
   let connections = await db.select().from(connectionsTable).get();
@@ -90,5 +127,6 @@ export async function bootstrap(): Promise<BootstrapConfig> {
       port: connections.port,
       buttons: buttons,
     },
+    sessionKey: sessions.key,
   };
 }

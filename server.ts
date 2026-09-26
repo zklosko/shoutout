@@ -15,15 +15,19 @@ import fastifyPassport from "@fastify/passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
-import fs from "node:fs";
 import { authRoutes } from "./src/routes/auth.js";
+import { db } from "./src/db/index.js";
+import { settingsTable } from "./src/db/schema.js";
+import { eq } from "drizzle-orm";
 
 const server = fastify();
 const __dirname = import.meta.dirname;
 const scrypt = promisify(scryptCallback);
 
+const { port, companion, sessionKey } = await bootstrap();
+
 await server.register(fastifySecureSession, {
-  key: fs.readFileSync("session-key"), // TODO gen in bootstrap
+  key: Buffer.from(sessionKey, "hex"),
   cookie: { path: "/ " },
 });
 
@@ -33,28 +37,44 @@ await server.register(fastifyPassport.secureSession());
 fastifyPassport.use(
   "local",
   new LocalStrategy(async (username, password, done) => {
-    if (username !== process.env.AUTH_USER) {
-      return done(null, false, { message: "Invalid credentials" });
+    try {
+      const settings = await db
+        .select({
+          username: settingsTable.approverUsername,
+          password: settingsTable.approverPassword,
+        })
+        .from(settingsTable)
+        .where(eq(settingsTable.id, "settings"))
+        .get();
+
+      if (!settings)
+        throw new Error("Could not open settings table in database");
+
+      if (username !== settings.username) {
+        return done(null, false, { message: "Invalid credentials" });
+      }
+
+      const [salt, hashHex] = settings.password.split(":");
+      if (!salt || !hashHex) {
+        throw new Error(
+          'AUTH_PASS_HASH is malformed — expected "salt:hash" format',
+        );
+      }
+
+      const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
+      const storedBuffer = Buffer.from(hashHex, "hex");
+      const valid =
+        derivedKey.length === storedBuffer.length &&
+        timingSafeEqual(derivedKey, storedBuffer);
+
+      if (!valid) {
+        return done(null, false, { message: "Invalid credentials" });
+      }
+
+      return done(null, { username }); // this becomes req.user
+    } catch (err) {
+      return done(err);
     }
-
-    const [salt, hashHex] = process.env.AUTH_PASS_HASH!.split(":");
-    if (!salt || !hashHex) {
-      throw new Error(
-        'AUTH_PASS_HASH is malformed — expected "salt:hash" format',
-      );
-    }
-
-    const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
-    const storedBuffer = Buffer.from(hashHex, "hex");
-    const valid =
-      derivedKey.length === storedBuffer.length &&
-      timingSafeEqual(derivedKey, storedBuffer);
-
-    if (!valid) {
-      return done(null, false, { message: "Invalid credentials" });
-    }
-
-    return done(null, { username }); // this becomes req.user
   }),
 );
 
@@ -95,15 +115,12 @@ server.get("/api/health", (request, response) => {
   });
 });
 
-// Startup db checks, get data needed to launch server
-const { port, companion } = await bootstrap();
 await server.register(companionPlugin, {
   host: companion.host,
   port: companion.port,
   buttons: companion.buttons,
 });
 
-// Launch server
 server.listen({ port: port, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
