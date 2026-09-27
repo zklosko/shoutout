@@ -26,7 +26,7 @@ Further documentation can be found in the [docs directory](/docs/).
 
 ## v1.0 Roadmap (subject to change)
 
-- [ ] Integration with ProPresenter via. Bitfocus Companion
+- [x] Integration with ProPresenter via. Bitfocus Companion
 - [ ] Multiple user accounts and user management
 - [x] Setup script ~~or wizard~~ for fresh installs
 - [ ] NPX installer and/or Raspberry Pi image for easy deployment
