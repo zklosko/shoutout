@@ -9,6 +9,16 @@ Future releases aim to be compatible with Raspberry Pi 4/5/Zero 2W units, althou
 
 ## Getting Started
 
+### Docker
+
+Install Docker Engine (Linux) or Docker Desktop (Mac/Win/Linux) and run:
+
+```bash
+docker run -d -p 8080:8080 --name shoutout ghcr.io/zklosko/shoutout:latest
+```
+
+### Source
+
 Clone this repo, install dependencies using Node 22 or later, and take it for a test drive. The database and admin login are created at first launch.
 
 ```bash
@@ -28,6 +38,7 @@ Further documentation can be found in the [docs directory](/docs/).
 
 - [x] Integration with ProPresenter via. Bitfocus Companion
 - [ ] Multiple user accounts and user management
+- [ ] Ability to send messages to screen directly, bypassing the approval step
 - [x] Setup script ~~or wizard~~ for fresh installs
-- [ ] NPX installer and/or Raspberry Pi image for easy deployment
+- [x] Docker ~~and/or Raspberry Pi~~ image for easy deployment
 - [ ] Guides for users and systems administrators
