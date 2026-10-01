@@ -1,8 +1,10 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "47a2ab26-192b-4e5e-a2b6-8fd6ba6e7a68",
-  "prevIds": ["00000000-0000-0000-0000-000000000000"],
+  "id": "2d03a955-b1da-476f-b864-1043bc107081",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
   "ddl": [
     {
       "name": "child_codes",
@@ -200,40 +202,60 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
+      "name": "skipApproval",
+      "entityType": "columns",
+      "table": "settings"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
       "name": "port",
       "entityType": "columns",
       "table": "settings"
     },
     {
-      "columns": ["childCode"],
+      "columns": [
+        "childCode"
+      ],
       "nameExplicit": false,
       "name": "child_codes_pk",
       "table": "child_codes",
       "entityType": "pks"
     },
     {
-      "columns": ["id"],
+      "columns": [
+        "id"
+      ],
       "nameExplicit": false,
       "name": "companion_buttons_pk",
       "table": "companion_buttons",
       "entityType": "pks"
     },
     {
-      "columns": ["type"],
+      "columns": [
+        "type"
+      ],
       "nameExplicit": false,
       "name": "connections_pk",
       "table": "connections",
       "entityType": "pks"
     },
     {
-      "columns": ["id"],
+      "columns": [
+        "id"
+      ],
       "nameExplicit": false,
       "name": "sessions_pk",
       "table": "sessions",
       "entityType": "pks"
     },
     {
-      "columns": ["id"],
+      "columns": [
+        "id"
+      ],
       "nameExplicit": false,
       "name": "settings_pk",
       "table": "settings",

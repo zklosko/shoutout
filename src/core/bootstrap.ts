@@ -72,6 +72,7 @@ export async function bootstrap(): Promise<BootstrapConfig> {
         approverUsername: USERNAME,
         approverPassword: await generateSaltForPassword(RAW_PASSWORD),
         port: 8080,
+        skipApproval: false,
       })
       .onConflictDoNothing()
       .returning()

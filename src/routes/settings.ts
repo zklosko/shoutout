@@ -11,6 +11,7 @@ import { requireAuth } from "../hooks/require-auth.js";
 type SettingsParams = {
   infoText: string;
   port: number;
+  skipApproval: string
   companionHost: string;
   companionPort: number;
   page: number;
@@ -58,6 +59,7 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
         const {
           infoText,
           port,
+          skipApproval: skipApprovalInput,
           companionHost,
           companionPort,
           page,
@@ -66,10 +68,12 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
           variableName,
         } = request.body;
 
+        const skipApproval = skipApprovalInput === "on"
+
         try {
-          await db
+          const settingsQuery = await db
             .update(settingsTable)
-            .set({ infoText: infoText, port: port })
+            .set({ infoText: infoText, port: port, skipApproval: skipApproval })
             .where(eq(settingsTable.id, "settings"))
             .returning()
             .get();
@@ -109,6 +113,8 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
               },
             ]);
           }
+
+          fastify.settings.updateSettings(settingsQuery)
         } catch (err) {
           return response.code(400).send("Could not update database");
         }

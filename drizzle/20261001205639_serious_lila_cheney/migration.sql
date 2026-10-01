@@ -28,5 +28,6 @@ CREATE TABLE `settings` (
 	`infoText` text NOT NULL,
 	`approverUsername` text NOT NULL,
 	`approverPassword` text NOT NULL,
+	`skipApproval` integer NOT NULL,
 	`port` integer NOT NULL
 );
