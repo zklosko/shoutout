@@ -1,7 +1,7 @@
 <div class="content">
   <h1 class="title">Settings</h1>
 
-  <form hx-post="/settings" hx-target="#new-child-result" hx-swap="innerHTML">
+  <form hx-post="/settings" hx-target="#settings-update-status" hx-swap="innerHTML">
     <h2 class="subtitle">General</h2>
     <div class="field">
       <label for="infoText">General information text</label>
@@ -109,7 +109,43 @@
         <button class="button is-primary" type="submit">Submit</button>
       </div>
       <div class="column">
-        <p id="new-child-result" class="is-size-6 has-text-dark px-4 py-1"></p>
+        <p id="settings-update-status" class="is-size-6 has-text-dark px-4 py-1"></p>
+      </div>
+    </div>
+  </form>
+
+  <h2 class="subtitle">Account settings</h2>
+  <form hx-post="/account/change" hx-target="#change-password-status" hx-swap="innerHTML">
+    <div class="field">
+      <label for="companionHost">Change password</label>
+      <div class="control">
+        <div class="columns">
+          <div class="column">
+            <input
+              class="input"
+              type="password"
+              name="newPassword"
+              placeholder="new password"
+            />
+          </div>
+          <div class="column">
+            <input
+              class="input"
+              type="password"
+              name="confirmPassword"
+              placeholder="confirm password"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="columns">
+      <div class="column is-1">
+        <button class="button is-primary" type="submit">Submit</button>
+      </div>
+      <div class="column">
+        <p id="change-password-status" class="is-size-6 has-text-dark px-4 py-1"></p>
       </div>
     </div>
   </form>

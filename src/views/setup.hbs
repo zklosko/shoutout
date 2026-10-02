@@ -1,0 +1,67 @@
+<section class="section">
+  <div class="has-text-centered mb-6">
+    <h1 class="title">Setup Shoutout</h1>
+  </div>
+
+  <progress id="progress" class="progress is-link" value="25" max="100">
+    25%
+  </progress>
+
+  <div id="step-1" class="box">
+    <h2 class="title is-4">Account</h2>
+    <p class="subtitle is-6">Create the admin login credentials</p>
+
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input id="username" class="input" type="text" placeholder="admin" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input
+          id="password"
+          class="input"
+          type="password"
+          placeholder="At least 6 characters"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Confirm Password</label>
+      <div class="control">
+        <input
+          id="password-confirm"
+          class="input"
+          type="password"
+          placeholder="At least 6 characters"
+        />
+      </div>
+    </div>
+
+    <div class="is-flex is-justified-content-flex-end mt-5">
+      <button class="button is-link" onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <div id="step-2" class="box is-hidden">
+    <h2 class="title is-4">Connections</h2>
+    <p class="subtitle">Set up Companion</p>
+
+    <div class="is-flex is-justified-content-flex-end mt-5">
+      <button class="button is-link" onclick="next()">Next</button>
+    </div>
+  </div>
+
+  <div id="step-3" class="box is-hidden">
+    <h2 class="title is-4">General</h2>
+    <p class="subtitle">Some things to make you feel at home</p>
+
+    <div class="is-flex is-justified-content-flex-end mt-5">
+      <button class="button is-link" onclick="submit()">Complete setup</button>
+    </div>
+  </div>
+</section>
