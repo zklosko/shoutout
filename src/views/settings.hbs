@@ -34,8 +34,6 @@
       </label>
     </div>
 
-    <hr />
-
     <h2 class="subtitle">Companion</h2>
     <div class="field">
       <label for="companionHost">IP Address</label>
@@ -114,6 +112,8 @@
     </div>
   </form>
 
+  <hr />
+
   <h2 class="subtitle">Account settings</h2>
   <form hx-post="/account/change" hx-target="#change-password-status" hx-swap="innerHTML">
     <div class="field">
@@ -149,4 +149,15 @@
       </div>
     </div>
   </form>
+
+  <hr />
+
+  <h2 class="subtitle">Database</h2>
+  <button
+    class="button is-danger"
+    hx-delete="/request/delete/all"
+    hx-target="#delete-all-childcodes-status"
+    hx-swap="innerHTML"
+  >Delete all requested child codes</button>
+  <p id="delete-all-childcodes-status" class="is-size-6 has-text-dark px-4 py-1"></p>
 </div>

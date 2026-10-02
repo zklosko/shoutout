@@ -110,4 +110,13 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
 
       return response.code(200).send({ ok: "true" })
     })
+    fastify.delete("/delete/all", async (request, response) => {
+      try {
+        await db.delete(childCodesTable)
+      } catch (err) {
+        return response.status(500).send({ ok: "false", error: err })
+      }
+
+      return response.status(200).send({ ok: "true" })
+    })
 }
