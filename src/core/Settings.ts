@@ -4,11 +4,11 @@ import { settingsTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import { db } from "../db/index.js";
 
-type DB = typeof db
+type DB = typeof db;
 
 type SettionsOptions = {
-  db: typeof db
-}
+  db: typeof db;
+};
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -27,22 +27,22 @@ class SettingsService {
       .select()
       .from(settingsTable)
       .where(eq(settingsTable.id, "settings"))
-      .get()
+      .get();
 
-    if (!settings) throw Error("Settings row not found")
+    if (!settings) throw Error("Settings row not found");
 
-    this.#settings = settings
+    this.#settings = settings;
   }
 
   updateSettings(values: Partial<typeof settingsTable.$inferSelect>) {
     this.#settings = {
       ...this.#settings,
-      ...values
-    }
+      ...values,
+    };
   }
 
   get skipApproval() {
-    return this.#settings.skipApproval
+    return this.#settings.skipApproval;
   }
 }
 

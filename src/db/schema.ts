@@ -20,7 +20,9 @@ export const settingsTable = sqliteTable("settings", {
     .$default(() => ""),
   approverUsername: text().notNull(),
   approverPassword: text().notNull(),
-  skipApproval: int({ mode: 'boolean'}).notNull().$default(() => false),
+  skipApproval: int({ mode: "boolean" })
+    .notNull()
+    .$default(() => false),
   port: int()
     .notNull()
     .$default(() => 8080),
