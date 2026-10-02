@@ -26,9 +26,9 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
     },
     async (request, response) => {},
   );
-    fastify.post("/logout", async (request, response) => {
-      request.logOut();
-      response.header("HX-Redirect", "/");
-      return response.send();
+  fastify.post("/logout", async (request, response) => {
+    request.logOut();
+    response.header("HX-Redirect", "/");
+    return response.send();
   });
 }
