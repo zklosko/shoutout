@@ -94,4 +94,20 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
           .send(`<td id="status-${childCode}">rejected</td>`);
       },
     ));
+    fastify.delete<{ Params: { childCode: string } }>("/delete/:childCode", async (request, response) => {
+      const { childCode } = request.params;
+      if (!childCode)
+        return response.status(400).send({ error: "Child code is required" });
+
+      try {
+        await db
+          .delete(childCodesTable)
+          .where(eq(childCodesTable.childCode, childCode))
+
+      } catch (err) {
+        return response.status(500).send({ ok: "false", error: err })
+      }
+
+      return response.code(200).send({ ok: "true" })
+    })
 }
