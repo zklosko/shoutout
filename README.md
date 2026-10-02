@@ -11,7 +11,7 @@ Future releases aim to be compatible with Raspberry Pi 4/5/Zero 2W units, althou
 
 ### Docker
 
-Install Docker Engine (Linux) or Docker Desktop (Mac/Win/Linux) and run:
+Install Docker Engine (Linux) or [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Mac/Win/Linux) and run:
 
 ```bash
 docker run -d -p 8080:8080 --name shoutout ghcr.io/zklosko/shoutout:latest
@@ -38,7 +38,8 @@ Further documentation can be found in the [docs directory](/docs/).
 
 - [x] Integration with ProPresenter via. Bitfocus Companion
 - [ ] Multiple user accounts and user management
-- [ ] Ability to send messages to screen directly, bypassing the approval step
-- [x] Setup script ~~or wizard~~ for fresh installs
+- [x] Ability to send messages to screen directly, bypassing the approval step
+- [x] Setup script for fresh installs
+- [ ] First user onbording
 - [x] Docker ~~and/or Raspberry Pi~~ image for easy deployment
 - [ ] Guides for users and systems administrators
