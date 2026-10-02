@@ -11,7 +11,7 @@ import { requireAuth } from "../hooks/require-auth.js";
 type SettingsParams = {
   infoText: string;
   port: number;
-  skipApproval: string
+  skipApproval: string;
   companionHost: string;
   companionPort: number;
   page: number;
@@ -46,12 +46,18 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
         "Could not load settings, connections, or buttons from database.",
       );
 
-    return response.viewAsync("settings.hbs", {
-      settings: settings,
-      connections: connections,
-      buttons: buttons,
-      isAuthenticated: request.isAuthenticated(),
-    });
+    return response.viewAsync(
+      "settings.hbs",
+      {
+        settings: settings,
+        connections: connections,
+        buttons: buttons,
+        isAuthenticated: request.isAuthenticated(),
+      },
+      {
+        layout: "layouts/base.hbs",
+      },
+    );
   }),
     fastify.post<{ Body: Partial<SettingsParams> }>(
       "/",
@@ -68,7 +74,7 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
           variableName,
         } = request.body;
 
-        const skipApproval = skipApprovalInput === "on"
+        const skipApproval = skipApprovalInput === "on";
 
         try {
           const settingsQuery = await db
@@ -114,7 +120,7 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
             ]);
           }
 
-          fastify.settings.updateSettings(settingsQuery)
+          fastify.settings.updateSettings(settingsQuery);
         } catch (err) {
           return response.code(400).send("Could not update database");
         }

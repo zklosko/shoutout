@@ -8,10 +8,14 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
       if (request.isAuthenticated()) {
         return response.redirect("/");
       }
-      return response.view("login", { error: request.query["error"] === "1" });
+      return response.view(
+        "login",
+        { error: request.query["error"] === "1" },
+        { layout: "layouts/base.hbs" },
+      );
     },
   );
-  (fastify.post(
+  fastify.post(
     "/login",
     {
       preValidation: fastifyPassport.authenticate("local", {
@@ -21,10 +25,10 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
       }),
     },
     async (request, response) => {},
-  ),
+  );
     fastify.post("/logout", async (request, response) => {
       request.logOut();
       response.header("HX-Redirect", "/");
       return response.send();
-    }));
+  });
 }

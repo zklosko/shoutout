@@ -4,7 +4,7 @@
         {{> message text=infoText}}
     {{/if}}
     <h2 class="subtitle">Submit a new child number</h2>
-    <form hx-post="/request/new" hx-target="#new-child-result" hx-swap="innerHTML">
+    <form hx-post="/request/new" hx-target="#childcodes" hx-swap="afterbegin">
         <div class="field">
             <label for="childCode">Child Code</label>
             <div class="control">
@@ -37,7 +37,7 @@
             <th>Status</th>
             <th>Actions</th>
         </thead>
-        <tbody>
+        <tbody id="childcodes">
             {{#each childCodes}}
                 {{> code-row auth=../isAuthenticated }}
             {{/each}}

@@ -26,12 +26,20 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
         });
 
       if (fastify.settings.skipApproval) {
-        await db.update(childCodesTable).set({ status: "submitted" }).where(eq(childCodesTable.childCode, childCode))
+        await db
+          .update(childCodesTable)
+          .set({ status: "submitted" })
+          .where(eq(childCodesTable.childCode, childCode));
 
         fastify.companion.send(childCode, note);
       }
 
-      return response.status(201).send({ success: true });
+      return response.status(201).viewAsync("partials/code-row.hbs", {
+        childCode: childCode,
+        note: note,
+        status: "submitted",
+        auth: request.isAuthenticated(),
+      });
     },
   ),
     fastify.post<{ Params: { childCode: string } }>(

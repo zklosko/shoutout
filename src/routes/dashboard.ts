@@ -9,10 +9,16 @@ export async function dashboardRoutes(fastify: FastifyInstance, options: {}) {
       .select({ text: settingsTable.infoText })
       .from(settingsTable)
       .get();
-    return response.viewAsync("dashboard.hbs", {
-      childCodes,
-      infoText: infoText?.text,
-      isAuthenticated: request.isAuthenticated(),
-    });
+    return response.viewAsync(
+      "dashboard.hbs",
+      {
+        childCodes,
+        infoText: infoText?.text,
+        isAuthenticated: request.isAuthenticated(),
+      },
+      {
+        layout: "layouts/base.hbs",
+      },
+    );
   });
 }

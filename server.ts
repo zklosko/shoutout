@@ -3,12 +3,12 @@ import fastifyStatic from "@fastify/static";
 import fastifyView from "@fastify/view";
 import path from "node:path";
 import Handlebars from "handlebars";
-import { db } from './src/db/index.js'
+import { db } from "./src/db/index.js";
 import { dashboardRoutes } from "./src/routes/dashboard.js";
 import { settingsRoutes } from "./src/routes/settings.js";
 import { bootstrap } from "./src/core/bootstrap.js";
 import companionPlugin from "./src/core/Companion.js";
-import settingsPlugin from "./src/core/Settings.js"
+import settingsPlugin from "./src/core/Settings.js";
 import { requestRoutes } from "./src/routes/request.js";
 import fastifyFormbody from "@fastify/formbody";
 import { loadPartials } from "./src/core/load-partials.js";
@@ -42,7 +42,6 @@ await server.register(fastifyView, {
     handlebars: Handlebars,
   },
   root: path.join(__dirname, "src/views"),
-  layout: "/layouts/base.hbs",
 });
 
 await loadPartials(path.join(__dirname, "src/views/partials"));
@@ -67,7 +66,8 @@ await server.register(companionPlugin, {
   buttons: companion.buttons,
 });
 
-await server.register(settingsPlugin, { db })
+await server.register(settingsPlugin, { db });
+await server.settings.load();
 
 server.listen({ port: port, host: "0.0.0.0" }, (err, address) => {
   if (err) {
