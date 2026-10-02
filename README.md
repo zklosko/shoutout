@@ -9,9 +9,28 @@ Future releases aim to be compatible with Raspberry Pi 4/5/Zero 2W units, althou
 
 ## Getting Started
 
-### Docker
+### Production setup with Docker Compose
 
-Install Docker Engine (Linux) or [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Mac/Win/Linux) and run:
+I strongly recommend running Shoutout behind a reverse proxy with HTTPS, like Caddy. A Caddyfile and Docker Compose setup are provided in this repo.
+
+```caddyfile
+shoutout.local { # <-- change to a local hostname of your choice, or your server's IP address
+    tls internal
+
+    reverse_proxy app:8080
+}
+```
+
+> [!NOTE]
+> Shoutout currently uses a local SSL/TLS certificate, which your browser will not trust by default. You will need to manually trust the certificate on each browser and device you use with Shoutout. This is common for locally-hosted software.
+
+Install Docker Engine (Linux) or [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Mac/Win/Linux), clone this repo, and run:
+
+```bash
+docker compose up -d
+```
+
+Additionally, you can run the container without a reverse proxy using:
 
 ```bash
 docker run -d -p 8080:8080 --name shoutout ghcr.io/zklosko/shoutout:latest
