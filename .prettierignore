@@ -3,6 +3,7 @@ build
 coverage
 out/
 dist/
+drizzle/
 
 package-lock.json
 *.service
