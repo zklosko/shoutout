@@ -1,9 +1,28 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
 
 :root {
-  --bulma-primary-h: 190deg;
-  --bulma-primary-l: 61%;
+  --bulma-primary-h: 220deg;
+  --bulma-primary-s: 82%;
+  --bulma-primary-l: 80%;
   --bulma-radius: 8px;
+  --surface: rgba(255, 255, 255, 0.85);
+  --border: rgba(45, 55, 72, 0.06);
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #eef2ff, #f8fafc 60%);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+table {
+  border-radius: 12px;
+  border-collapse: inherit;
 }
 
 #confirm-dialog {
@@ -18,6 +37,13 @@
 #confirm-dialog::backdrop {
   background: rgb(0 0 0 / 0.5);
   backdrop-filter: blur(2px);
+}
+
+.nav-level {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
 }
 
 .toast-container {
@@ -41,4 +67,18 @@
 @keyframes toast-in { from { opacity: 0; transform: translateY(.5rem); } }
 @media (prefers-reduced-motion: reduce) {
   .toast-container .notification { animation: none; }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: radial-gradient(circle at top left, #1e2a4a, #0f172a 60%);
+    background-attachment: fixed;
+    color: #e2e8f0;
+  }
+  .nav-level {
+    background: rgba(30, 41, 59, 0.92);
+    border-color: rgba(226, 232, 240, 0.08);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
 }

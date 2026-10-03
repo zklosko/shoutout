@@ -1,18 +1,20 @@
-<form method="POST" action="/login" hx-boost="false">
-  {{#if error}}
-    <span class="tag is-medium is-warning mb-4">Invalid username or password.</span>
-  {{/if}}
-  <div class="field">
-    <label class="label">Username</label>
-    <div class="control">
-      <input class="input" type="text" name="username" required />
+<div class="box">
+  <form method="POST" action="/login" hx-boost="false">
+    {{#if error}}
+      <span class="tag is-medium is-warning mb-4">Invalid username or password.</span>
+    {{/if}}
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" type="text" name="username" required />
+      </div>
     </div>
-  </div>
-  <div class="field">
-    <label class="label">Password</label>
-    <div class="control">
-      <input class="input" type="password" name="password" required />
+    <div class="field">
+      <label class="label">Password</label>
+      <div class="control">
+        <input class="input" type="password" name="password" required />
+      </div>
     </div>
-  </div>
-  <button type="submit" class="button is-primary">Sign in</button>
-</form>
+    <button type="submit" class="button is-primary">Sign in</button>
+  </form>
+</div>
