@@ -1,4 +1,4 @@
-<tr id="code-{{childCode}}">
+<tr id="code-{{childCode}}" hx-on:request-rejected="if (event.detail.childCode === '{{childCode}}') this.remove()">
   <td>{{childCode}}</td>
   <td>{{note}}</td>
   <td id="status-{{childCode}}">{{status}}</td>
@@ -12,6 +12,7 @@
       >Approve</button>
       <button
         class="button is-danger"
+        hx-confirm="Reject submission: {{childCode}}?"
         hx-post="/request/reject/{{childCode}}"
         hx-target="#status-{{childCode}}"
         hx-swap="outerHTML"

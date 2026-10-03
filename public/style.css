@@ -1,75 +1,44 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css";
+
 :root {
-  color-scheme: light dark;
+  --bulma-primary-h: 190deg;
+  --bulma-primary-l: 61%;
+  --bulma-radius: 8px;
 }
-body {
-  font-family: system-ui, sans-serif;
-  max-width: 640px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+
+#confirm-dialog {
+  border: 0;
+  border-radius: var(--bulma-radius-large, 8px);
+  padding: 1.5rem;
+  max-width: 28rem;
+  width: calc(100% - 2rem);
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.2);
 }
-h1 {
-  font-size: 1.4rem;
+
+#confirm-dialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(2px);
 }
-h2 {
-  font-size: 1.05rem;
-  margin-top: 2.5rem;
-  border-bottom: 1px solid #8884;
-  padding-bottom: 0.3rem;
+
+.toast-container {
+  position: fixed; 
+  top: 1rem; 
+  right: 1rem; 
+  z-index: 100;
+  display: flex; 
+  flex-direction: column; 
+  gap: .5rem;
+  width: min(24rem, calc(100% - 2rem));
 }
-button {
-  padding: 0.5rem 1rem;
-  margin: 0.25rem 0.25rem 0.25rem 0;
-  cursor: pointer;
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY((-.5rem));}
 }
-input,
-select {
-  padding: 0.4rem;
-  margin: 0.25rem 0;
-  width: 100%;
-  box-sizing: border-box;
+.toast-container .notification {
+  margin: 0; box-shadow: 0 4px 16px rgb(0 0 0 / .2);
+  animation: toast-in .2s ease-out;
 }
-label {
-  display: block;
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-#log {
-  background: #8881;
-  padding: 0.75rem;
-  font-family: monospace;
-  font-size: 0.85rem;
-  white-space: pre-wrap;
-  max-height: 200px;
-  overflow-y: auto;
-  border-radius: 4px;
-}
-.row {
-  display: flex;
-  gap: 0.5rem;
-}
-.row > * {
-  flex: 1;
-}
-.scene-btn {
-  display: inline-block;
-}
-.hint {
-  font-size: 0.8rem;
-  opacity: 0.7;
-  margin-top: 0.25rem;
-}
-.badge {
-  display: inline-block;
-  padding: 0.1rem 0.5rem;
-  border-radius: 1rem;
-  font-size: 0.75rem;
-}
-.badge.set {
-  background: #2a7;
-  color: white;
-}
-.badge.unset {
-  background: #a72;
-  color: white;
+.toast-container .notification.is-leaving { opacity: 0; transition: opacity .3s; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(.5rem); } }
+@media (prefers-reduced-motion: reduce) {
+  .toast-container .notification { animation: none; }
 }

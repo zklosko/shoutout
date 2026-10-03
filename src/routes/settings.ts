@@ -122,7 +122,13 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
 
           fastify.settings.updateSettings(settingsQuery);
         } catch (err) {
-          return response.code(400).send("Could not update database");
+          return response.code(400).header('HX-Trigger', JSON.stringify({
+        toast: {
+          message: 'Could not update database',
+          type: 'danger',
+        }
+      }))
+      .send('')
         }
 
         response.send({

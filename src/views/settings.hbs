@@ -155,9 +155,8 @@
   <h2 class="subtitle">Database</h2>
   <button
     class="button is-danger"
+    hx-confirm="Delete all child codes? This can't be undone."
     hx-delete="/request/delete/all"
-    hx-target="#delete-all-childcodes-status"
-    hx-swap="innerHTML"
+    hx-swap="none"
   >Delete all requested child codes</button>
-  <p id="delete-all-childcodes-status" class="is-size-6 has-text-dark px-4 py-1"></p>
 </div>
