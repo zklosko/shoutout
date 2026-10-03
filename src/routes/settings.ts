@@ -131,9 +131,13 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
       .send('')
         }
 
-        response.send({
-          ok: true,
-        });
+        response.header('HX-Trigger', JSON.stringify({
+        toast: {
+          message: 'Settings updated',
+          type: 'success',
+        }
+      }))
+      .send('')
         return response.viewAsync("settings.hbs", {});
       },
     ));

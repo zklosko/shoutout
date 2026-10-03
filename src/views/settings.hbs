@@ -1,7 +1,7 @@
 <div class="content">
   <h1 class="title">Settings</h1>
 
-  <form hx-post="/settings" hx-target="#settings-update-status" hx-swap="innerHTML">
+  <form hx-post="/settings" hx-swap="none">
     <h2 class="subtitle">General</h2>
     <div class="field">
       <label for="infoText">General information text</label>
@@ -105,9 +105,6 @@
     <div class="columns">
       <div class="column is-1">
         <button class="button is-primary" type="submit">Submit</button>
-      </div>
-      <div class="column">
-        <p id="settings-update-status" class="is-size-6 has-text-dark px-4 py-1"></p>
       </div>
     </div>
   </form>
