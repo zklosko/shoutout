@@ -47,26 +47,40 @@ table {
 }
 
 .toast-container {
-  position: fixed; 
-  top: 1rem; 
-  right: 1rem; 
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
   z-index: 100;
-  display: flex; 
-  flex-direction: column; 
-  gap: .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: min(24rem, calc(100% - 2rem));
 }
 @keyframes toast-in {
-  from { opacity: 0; transform: translateY((-.5rem));}
+  from {
+    opacity: 0;
+    transform: translateY((-0.5rem));
+  }
 }
 .toast-container .notification {
-  margin: 0; box-shadow: 0 4px 16px rgb(0 0 0 / .2);
-  animation: toast-in .2s ease-out;
+  margin: 0;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.2);
+  animation: toast-in 0.2s ease-out;
 }
-.toast-container .notification.is-leaving { opacity: 0; transition: opacity .3s; }
-@keyframes toast-in { from { opacity: 0; transform: translateY(.5rem); } }
+.toast-container .notification.is-leaving {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .toast-container .notification { animation: none; }
+  .toast-container .notification {
+    animation: none;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

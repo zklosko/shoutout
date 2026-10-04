@@ -6,9 +6,9 @@ import { settingsTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 
 type ChangePasswordParams = {
-  newPassword: string
-  confirmPassword: string
-}
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export async function authRoutes(fastify: FastifyInstance, options: {}) {
   fastify.get<{ Querystring: { error?: string; next?: string } }>(
@@ -40,20 +40,23 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
     response.header("HX-Redirect", "/");
     return response.send();
   });
-  fastify.post<{ Body: ChangePasswordParams }>("/account/change", async (request, response) => {
-    const {
-      newPassword,
-      confirmPassword
-    } = request.body
+  fastify.post<{ Body: ChangePasswordParams }>(
+    "/account/change",
+    async (request, response) => {
+      const { newPassword, confirmPassword } = request.body;
 
-    if (newPassword !== confirmPassword) {
-      return response.send({ ok: "false" })
-    }
+      if (newPassword !== confirmPassword) {
+        return response.send({ ok: "false" });
+      }
 
-    const hashedNewPassword = await generateSaltForPassword(newPassword)
+      const hashedNewPassword = await generateSaltForPassword(newPassword);
 
-    await db.update(settingsTable).set({ approverPassword: hashedNewPassword }).where(eq(settingsTable.id, "settings"))
+      await db
+        .update(settingsTable)
+        .set({ approverPassword: hashedNewPassword })
+        .where(eq(settingsTable.id, "settings"));
 
-    return response.send({ ok: "true" })
-  })
+      return response.send({ ok: "true" });
+    },
+  );
 }

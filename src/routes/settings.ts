@@ -122,22 +122,31 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
 
           fastify.settings.updateSettings(settingsQuery);
         } catch (err) {
-          return response.code(400).header('HX-Trigger', JSON.stringify({
-        toast: {
-          message: 'Could not update database',
-          type: 'danger',
-        }
-      }))
-      .send('')
+          return response
+            .code(400)
+            .header(
+              "HX-Trigger",
+              JSON.stringify({
+                toast: {
+                  message: "Could not update database",
+                  type: "danger",
+                },
+              }),
+            )
+            .send("");
         }
 
-        response.header('HX-Trigger', JSON.stringify({
-        toast: {
-          message: 'Settings updated',
-          type: 'success',
-        }
-      }))
-      .send('')
+        response
+          .header(
+            "HX-Trigger",
+            JSON.stringify({
+              toast: {
+                message: "Settings updated",
+                type: "success",
+              },
+            }),
+          )
+          .send("");
         return response.viewAsync("settings.hbs", {});
       },
     ));
