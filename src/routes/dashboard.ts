@@ -21,4 +21,17 @@ export async function dashboardRoutes(fastify: FastifyInstance, options: {}) {
       },
     );
   });
+  fastify.get("/logs", async (request, response) => {
+    const childCodes = await db.select().from(childCodesTable).all();
+    return response.viewAsync(
+      "logs.hbs",
+      {
+        childCodes,
+        isAuthenticated: request.isAuthenticated(),
+      },
+      {
+        layout: "layouts/base.hbs",
+      },
+    );
+  });
 }

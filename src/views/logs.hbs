@@ -1,0 +1,23 @@
+<div class="content">
+    <h1 class="title">Logs</h1>
+    <button
+        class="button is-danger"
+        hx-confirm="Delete all child codes? This can't be undone."
+        hx-delete="/request/delete/all"
+        hx-swap="none"
+    >Delete all</button>
+
+    <table class="table is-fullwidth is-hoverable mt-4">
+        <thead>
+            <th>Child number</th>
+            <th>Note</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </thead>
+        <tbody id="childcodes">
+            {{#each childCodes}}
+                {{> code-row logs=true }}
+            {{/each}}
+        </tbody>
+    </table>
+</div>

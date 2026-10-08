@@ -23,6 +23,13 @@
         hx-target="#code-{{childCode}}"
         hx-swap="delete"
       >
+    {{else if logs}}
+      <button
+        class="delete is-medium"
+        hx-delete="/request/delete/{{childCode}}"
+        hx-target="#code-{{childCode}}"
+        hx-swap="delete"
+      >
     {{else}}
       &dash;
     {{/if}}
