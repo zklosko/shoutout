@@ -1,10 +1,15 @@
 import type { FastifyInstance } from "fastify";
 import { db } from "../db/index.js";
 import { childCodesTable, settingsTable } from "../db/schema.js";
+import { eq } from "drizzle-orm";
 
 export async function dashboardRoutes(fastify: FastifyInstance, options: {}) {
   fastify.get("/", async (request, response) => {
-    const childCodes = await db.select().from(childCodesTable).all();
+    const childCodes = await db
+      .select()
+      .from(childCodesTable)
+      .where(eq(childCodesTable.status, "submitted"))
+      .all();
     const infoText = await db
       .select({ text: settingsTable.infoText })
       .from(settingsTable)

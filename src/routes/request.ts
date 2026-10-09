@@ -43,6 +43,19 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
           .where(eq(childCodesTable.childCode, childCode));
 
         fastify.companion.send(childCode, note);
+
+        return response
+          .status(201)
+          .header(
+            "HX-Trigger",
+            JSON.stringify({ approveRejectSuccess: { childCode: childCode } }),
+          )
+          .viewAsync("partials/code-row.hbs", {
+            childCode: childCode,
+            note: note,
+            status: "submitted",
+            auth: request.isAuthenticated(),
+          });
       }
 
       return response.status(201).viewAsync("partials/code-row.hbs", {
@@ -88,6 +101,10 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
 
         return response
           .status(201)
+          .header(
+            "HX-Trigger",
+            JSON.stringify({ approveRejectSuccess: { childCode: childCode } }),
+          )
           .send(`<td id="status-${childCode}">approved</td>`);
       },
     ),
@@ -124,6 +141,10 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
 
         return response
           .status(201)
+          .header(
+            "HX-Trigger",
+            JSON.stringify({ approveRejectSuccess: { childCode: childCode } }),
+          )
           .send(`<td id="status-${childCode}">rejected</td>`);
       },
     ));

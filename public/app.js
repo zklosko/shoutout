@@ -1,5 +1,4 @@
 // For confirmation dialogs
-
 document.body.addEventListener("htmx:confirm", (e) => {
   const question = e.detail.ctx?.confirm;
   if (!question) return;
@@ -51,4 +50,12 @@ document.addEventListener("toast", (e) => {
   console.log("toast event detail:", e.detail); // remove once it works
   const d = e.detail?.value ?? e.detail ?? {};
   showToast(d.message, d.type);
+});
+
+// Remove rows after succesful approve/reject
+document.body.addEventListener("approveRejectSuccess", function (e) {
+  const childCode = e.detail.childCode;
+  const row = document.getElementById(`code-${childCode}`);
+
+  if (row) setTimeout(() => row.remove(), 5000);
 });
