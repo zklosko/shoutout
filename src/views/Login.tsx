@@ -4,14 +4,12 @@ export const LoginPage = ({ error }: { error: boolean }) => (
   <Layout title="Log In" isAuthenticated={false}>
     <div class="box">
       <form method="POST" action="/login" hx-boost="false">
-        {error ? (
+        {error && (
           <>
             <span class="tag is-medium is-warning mb-4">
               Invalid username or password.
             </span>
           </>
-        ) : (
-          <></>
         )}
 
         <div class="field">
