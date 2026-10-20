@@ -1,4 +1,31 @@
-<div class="content">
+import { Layout } from "./Layout.js";
+
+type Settings = {
+    id: string;
+    infoText: string;
+    approverUsername: string;
+    approverPassword: string;
+    skipApproval: boolean;
+    port: number;
+}
+
+type Connections = {
+    type: string;
+    host: string;
+    port: number;
+}
+
+type Buttons = {
+    id: number;
+    page: number;
+    row: number;
+    col: number;
+    variableName: string;
+}
+
+export const SettingsPage = ({settings, connections, buttons, auth}: {settings: Settings; connections: Connections; buttons: Buttons[]; auth: boolean}) => (
+    <Layout title="Settings" isAuthenticated={auth}>
+    <div class="content">
   <h1 class="title">Settings</h1>
 
 <div class="box">
@@ -12,7 +39,7 @@
           type="text"
           name="infoText"
           placeholder="info message"
-          value="{{settings.infoText}}"
+          value={settings.infoText}
         />
       </div>
     </div>
@@ -24,14 +51,14 @@
           type="number"
           name="port"
           placeholder="8080"
-          value="{{settings.port}}"
+          value={settings.port}
           disabled
         />
       </div>
     </div>
     <div class="field">
       <label class="checkbox">
-        <input name="skipApproval" type="checkbox" value="on" {{#if settings.skipApproval}}checked{{/if}} /> Publish directly to screen, skipping approval
+        <input name="skipApproval" type="checkbox" value="on" checked={!!settings.skipApproval} /> Publish directly to screen, skipping approval
       </label>
     </div>
 
@@ -44,7 +71,7 @@
           type="text"
           name="companionHost"
           placeholder="0.0.0.0"
-          value="{{connections.host}}"
+          value={connections.host}
         />
       </div>
     </div>
@@ -56,7 +83,7 @@
           type="number"
           name="companionPort"
           placeholder="8000"
-          value="{{connections.port}}"
+          value={connections.port}
         />
       </div>
     </div>
@@ -69,38 +96,38 @@
         <th>Custom Variable</th>
       </thead>
       <tbody>
-        {{#each buttons}}
+        {buttons.map(b => (
           <tr>
             <td><input
                 class="input"
                 type="number"
                 name="page"
                 placeholder="1"
-                value="{{page}}"
+                value={b.page}
               /></td>
             <td><input
                 class="input"
                 type="number"
                 name="row"
                 placeholder="0"
-                value="{{row}}"
+                value={b.row}
               /></td>
             <td><input
                 class="input"
                 type="number"
                 name="col"
                 placeholder="0"
-                value="{{col}}"
+                value={b.col}
               /></td>
             <td><input
                 class="input"
                 type="text"
                 name="variableName"
                 placeholder="shoutoutMessage1"
-                value="{{variableName}}"
+                value={b.variableName}
               /></td>
           </tr>
-        {{/each}}
+        ))}
       </tbody>
     </table>
     <div class="columns">
@@ -158,3 +185,5 @@
     hx-swap="none"
   >Delete all requested child codes</button>
 </div>
+</Layout>
+)

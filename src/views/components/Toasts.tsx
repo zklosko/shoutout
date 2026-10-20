@@ -1,0 +1,3 @@
+export const Toasts = () => (
+  <div id="toasts" class="toast-container" aria-live="polite"></div>
+);

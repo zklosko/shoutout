@@ -2,6 +2,8 @@ import type { FastifyInstance } from "fastify";
 import { db } from "../db/index.js";
 import { childCodesTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
+import { CodeRow } from "../views/components/CodeRow.js";
+import type { ChildCode } from "../views/Dashboard.js";
 
 type NewChildCode = {
   childCode: string;
@@ -44,26 +46,27 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
 
         fastify.companion.send(childCode, note);
 
+        const childCodeEntry: ChildCode = {
+          childCode,
+          ...(note ? { note } : {}),
+          status: "submitted",
+        };
+
         return response
           .status(201)
           .header(
             "HX-Trigger",
             JSON.stringify({ approveRejectSuccess: { childCode: childCode } }),
           )
-          .viewAsync("partials/code-row.hbs", {
-            childCode: childCode,
-            note: note,
-            status: "submitted",
-            auth: request.isAuthenticated(),
-          });
+          .view(<CodeRow childCode={childCodeEntry} auth={request.isAuthenticated()} logs={false} />)
       }
-
-      return response.status(201).viewAsync("partials/code-row.hbs", {
-        childCode: childCode,
-        note: note,
+      
+      const childCodeEntry: ChildCode = {
+        childCode,
+        ...(note ? { note } : {}),
         status: "submitted",
-        auth: request.isAuthenticated(),
-      });
+      };
+      return response.status(201).view(<CodeRow childCode={childCodeEntry} auth={request.isAuthenticated()} logs={false} />)
     },
   ),
     fastify.post<{ Params: { childCode: string } }>(

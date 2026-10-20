@@ -1,8 +1,6 @@
-import fastify from "fastify";
+import fastify, { type FastifyReply } from "fastify";
 import fastifyStatic from "@fastify/static";
-import fastifyView from "@fastify/view";
 import path from "node:path";
-import Handlebars from "handlebars";
 import { db } from "./src/db/index.js";
 import { dashboardRoutes } from "./src/routes/dashboard.js";
 import { settingsRoutes } from "./src/routes/settings.js";
@@ -11,11 +9,18 @@ import companionPlugin from "./src/core/Companion.js";
 import settingsPlugin from "./src/core/Settings.js";
 import { requestRoutes } from "./src/routes/request.js";
 import fastifyFormbody from "@fastify/formbody";
-import { loadPartials } from "./src/core/load-partials.js";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifyPassport from "@fastify/passport";
 import { authRoutes } from "./src/routes/auth.js";
 import { configurePassport } from "./src/core/auth.js";
+import { render } from "preact-render-to-string";
+import type { VNode } from "preact";
+
+declare module "fastify" {
+  interface FastifyReply {
+    view(node: VNode): FastifyReply;
+  }
+}
 
 const server = fastify();
 const __dirname = import.meta.dirname;
@@ -37,14 +42,11 @@ await server.register(fastifyStatic, {
   constraints: {},
 });
 
-await server.register(fastifyView, {
-  engine: {
-    handlebars: Handlebars,
-  },
-  root: path.join(__dirname, "src/views"),
+server.decorateReply("view", function (this: FastifyReply, node: VNode) {
+  return this.type("text/html; charset=utf-8").send(
+    "<!doctype html>" + render(node),
+  );
 });
-
-await loadPartials(path.join(__dirname, "src/views/partials"));
 
 server.register(fastifyFormbody);
 

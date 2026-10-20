@@ -4,6 +4,7 @@ import { generateSaltForPassword } from "../core/auth.js";
 import { db } from "../db/index.js";
 import { settingsTable } from "../db/schema.js";
 import { eq } from "drizzle-orm";
+import { LoginPage } from "../views/Login.js";
 
 type ChangePasswordParams = {
   newPassword: string;
@@ -17,11 +18,8 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
       if (request.isAuthenticated()) {
         return response.redirect("/");
       }
-      return response.view(
-        "login",
-        { error: request.query["error"] === "1" },
-        { layout: "layouts/base.hbs" },
-      );
+      const loginError = request.query["error"]  === "1"
+      return response.view(<LoginPage error={loginError} />)
     },
   );
   fastify.post(
@@ -56,7 +54,15 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
         .set({ approverPassword: hashedNewPassword })
         .where(eq(settingsTable.id, "settings"));
 
-      return response.send({ ok: "true" });
+      return response.header(
+          "HX-Trigger",
+          JSON.stringify({
+            toast: {
+              message: `Changed password successfully`,
+              type: "info",
+            },
+          }),
+        ).send("")
     },
   );
 }

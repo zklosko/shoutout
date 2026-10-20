@@ -7,6 +7,7 @@ import {
 } from "../db/schema.js";
 import { eq } from "drizzle-orm";
 import { requireAuth } from "../hooks/require-auth.js";
+import { SettingsPage } from "../views/Settings.js";
 
 type SettingsParams = {
   infoText: string;
@@ -46,18 +47,7 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
         "Could not load settings, connections, or buttons from database.",
       );
 
-    return response.viewAsync(
-      "settings.hbs",
-      {
-        settings: settings,
-        connections: connections,
-        buttons: buttons,
-        isAuthenticated: request.isAuthenticated(),
-      },
-      {
-        layout: "layouts/base.hbs",
-      },
-    );
+    return response.view(<SettingsPage settings={settings} connections={connections} buttons={buttons} auth={request.isAuthenticated()} />)
   }),
     fastify.post<{ Body: Partial<SettingsParams> }>(
       "/",
@@ -136,7 +126,7 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
             .send("");
         }
 
-        response
+        return response
           .header(
             "HX-Trigger",
             JSON.stringify({
@@ -147,7 +137,6 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
             }),
           )
           .send("");
-        return response.viewAsync("settings.hbs", {});
       },
     ));
 }

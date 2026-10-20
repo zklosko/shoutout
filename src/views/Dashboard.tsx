@@ -1,8 +1,18 @@
-<div class="content">
+import { CodeRow } from "./components/CodeRow.js";
+import { InfoMessage } from "./components/InfoMessage.js";
+import { Layout } from "./Layout.js";
+
+export type ChildCode = {
+    childCode: string;
+    note?: string;
+    status: string;
+}
+
+export const DashboardPage = ({childCodes, infoText, auth}: {childCodes: ChildCode[]; infoText: string | undefined; auth: boolean}) => (
+    <Layout title="Dashboard" isAuthenticated={auth}>
+        <div class="content">
     <h1 class="title">Dashboard</h1>
-    {{#if infoText}}
-        {{> message text=infoText}}
-    {{/if}}
+    {infoText && <InfoMessage msg={infoText} />}
 
     <div class="box">
         <h2 class="subtitle">Submit a new child number</h2>
@@ -10,13 +20,13 @@
             <div class="field">
                 <label for="childCode">Child Code</label>
                 <div class="control">
-                    <input class="input" type="text" name="childCode" placeholder="123">
+                    <input class="input" type="text" name="childCode" placeholder="123" />
                 </div>
             </div>
             <div class="field">
                 <label for="note">Note (optional)</label>
                 <div class="control">
-                    <input class="input" type="text" name="note" placeholder="Mom needs to come get him">
+                    <input class="input" type="text" name="note" placeholder="Mom needs to come get him" />
                 </div>
             </div>
 
@@ -40,9 +50,9 @@
             <th>Actions</th>
         </thead>
         <tbody id="childcodes">
-            {{#each childCodes}}
-                {{> code-row auth=../isAuthenticated }}
-            {{/each}}
+            {childCodes.map(c => <CodeRow childCode={c} auth={auth} logs={true} /> )}
         </tbody>
     </table>
 </div>
+    </Layout>
+)
