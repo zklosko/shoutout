@@ -58,15 +58,29 @@ export async function requestRoutes(fastify: FastifyInstance, options: {}) {
             "HX-Trigger",
             JSON.stringify({ approveRejectSuccess: { childCode: childCode } }),
           )
-          .view(<CodeRow childCode={childCodeEntry} auth={request.isAuthenticated()} logs={false} />)
+          .view(
+            <CodeRow
+              childCode={childCodeEntry}
+              auth={request.isAuthenticated()}
+              logs={false}
+            />,
+          );
       }
-      
+
       const childCodeEntry: ChildCode = {
         childCode,
         ...(note ? { note } : {}),
         status: "submitted",
       };
-      return response.status(201).view(<CodeRow childCode={childCodeEntry} auth={request.isAuthenticated()} logs={false} />)
+      return response
+        .status(201)
+        .view(
+          <CodeRow
+            childCode={childCodeEntry}
+            auth={request.isAuthenticated()}
+            logs={false}
+          />,
+        );
     },
   ),
     fastify.post<{ Params: { childCode: string } }>(

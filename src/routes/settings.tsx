@@ -47,7 +47,14 @@ export async function settingsRoutes(fastify: FastifyInstance, options: {}) {
         "Could not load settings, connections, or buttons from database.",
       );
 
-    return response.view(<SettingsPage settings={settings} connections={connections} buttons={buttons} auth={request.isAuthenticated()} />)
+    return response.view(
+      <SettingsPage
+        settings={settings}
+        connections={connections}
+        buttons={buttons}
+        auth={request.isAuthenticated()}
+      />,
+    );
   }),
     fastify.post<{ Body: Partial<SettingsParams> }>(
       "/",

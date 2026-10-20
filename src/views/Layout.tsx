@@ -12,24 +12,28 @@ export const Layout = ({
   isAuthenticated: boolean;
   children?: ComponentChildren;
 }): VNode => (
-<html>
+  <html>
     <head>
-        <title>Shoutout - {title}</title>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="style.css" />
-        <link rel="icon" href="/favicon.svg" />
-        <script type="module" src="/app.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js" integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc" crossorigin="anonymous"></script>
+      <title>Shoutout - {title}</title>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="stylesheet" href="style.css" />
+      <link rel="icon" href="/favicon.svg" />
+      <script type="module" src="/app.js"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js"
+        integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc"
+        crossorigin="anonymous"
+      ></script>
     </head>
     <body>
-        <Nav isAuthenticated={isAuthenticated} />
-        <div class="container is-max-desktop">
-            {children}
+      <Nav isAuthenticated={isAuthenticated} />
+      <div class="container is-max-desktop">
+        {children}
 
-            <ConfirmDialog />
-            <Toasts />
-        </div>
+        <ConfirmDialog />
+        <Toasts />
+      </div>
     </body>
-</html>
-)
+  </html>
+);

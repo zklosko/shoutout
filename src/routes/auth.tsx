@@ -18,8 +18,8 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
       if (request.isAuthenticated()) {
         return response.redirect("/");
       }
-      const loginError = request.query["error"]  === "1"
-      return response.view(<LoginPage error={loginError} />)
+      const loginError = request.query["error"] === "1";
+      return response.view(<LoginPage error={loginError} />);
     },
   );
   fastify.post(
@@ -54,7 +54,8 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
         .set({ approverPassword: hashedNewPassword })
         .where(eq(settingsTable.id, "settings"));
 
-      return response.header(
+      return response
+        .header(
           "HX-Trigger",
           JSON.stringify({
             toast: {
@@ -62,7 +63,8 @@ export async function authRoutes(fastify: FastifyInstance, options: {}) {
               type: "info",
             },
           }),
-        ).send("")
+        )
+        .send("");
     },
   );
 }

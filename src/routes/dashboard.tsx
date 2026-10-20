@@ -16,10 +16,18 @@ export async function dashboardRoutes(fastify: FastifyInstance, options: {}) {
       .select({ text: settingsTable.infoText })
       .from(settingsTable)
       .get();
-    return response.view(<DashboardPage childCodes={childCodes} infoText={infoText?.text} auth={request.isAuthenticated()} />)
+    return response.view(
+      <DashboardPage
+        childCodes={childCodes}
+        infoText={infoText?.text}
+        auth={request.isAuthenticated()}
+      />,
+    );
   });
   fastify.get("/logs", async (request, response) => {
     const childCodes = await db.select().from(childCodesTable).all();
-    return response.view(<LogsPage logs={childCodes} auth={request.isAuthenticated()} />)
+    return response.view(
+      <LogsPage logs={childCodes} auth={request.isAuthenticated()} />,
+    );
   });
 }

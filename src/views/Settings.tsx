@@ -1,189 +1,225 @@
 import { Layout } from "./Layout.js";
 
 type Settings = {
-    id: string;
-    infoText: string;
-    approverUsername: string;
-    approverPassword: string;
-    skipApproval: boolean;
-    port: number;
-}
+  id: string;
+  infoText: string;
+  approverUsername: string;
+  approverPassword: string;
+  skipApproval: boolean;
+  port: number;
+};
 
 type Connections = {
-    type: string;
-    host: string;
-    port: number;
-}
+  type: string;
+  host: string;
+  port: number;
+};
 
 type Buttons = {
-    id: number;
-    page: number;
-    row: number;
-    col: number;
-    variableName: string;
-}
+  id: number;
+  page: number;
+  row: number;
+  col: number;
+  variableName: string;
+};
 
-export const SettingsPage = ({settings, connections, buttons, auth}: {settings: Settings; connections: Connections; buttons: Buttons[]; auth: boolean}) => (
-    <Layout title="Settings" isAuthenticated={auth}>
+export const SettingsPage = ({
+  settings,
+  connections,
+  buttons,
+  auth,
+}: {
+  settings: Settings;
+  connections: Connections;
+  buttons: Buttons[];
+  auth: boolean;
+}) => (
+  <Layout title="Settings" isAuthenticated={auth}>
     <div class="content">
-  <h1 class="title">Settings</h1>
+      <h1 class="title">Settings</h1>
 
-<div class="box">
-  <form hx-post="/settings" hx-swap="none">
-    <h2 class="subtitle">General</h2>
-    <div class="field">
-      <label for="infoText">General information text</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          name="infoText"
-          placeholder="info message"
-          value={settings.infoText}
-        />
-      </div>
-    </div>
-    <div class="field">
-      <label for="port">Server Port</label>
-      <div class="control">
-        <input
-          class="input"
-          type="number"
-          name="port"
-          placeholder="8080"
-          value={settings.port}
-          disabled
-        />
-      </div>
-    </div>
-    <div class="field">
-      <label class="checkbox">
-        <input name="skipApproval" type="checkbox" value="on" checked={!!settings.skipApproval} /> Publish directly to screen, skipping approval
-      </label>
-    </div>
-
-    <h2 class="subtitle">Companion</h2>
-    <div class="field">
-      <label for="companionHost">IP Address</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          name="companionHost"
-          placeholder="0.0.0.0"
-          value={connections.host}
-        />
-      </div>
-    </div>
-    <div class="field">
-      <label for="companionPort">Port</label>
-      <div class="control">
-        <input
-          class="input"
-          type="number"
-          name="companionPort"
-          placeholder="8000"
-          value={connections.port}
-        />
-      </div>
-    </div>
-
-    <table class="table is-fullwidth">
-      <thead>
-        <th>Page</th>
-        <th>Row</th>
-        <th>Column</th>
-        <th>Custom Variable</th>
-      </thead>
-      <tbody>
-        {buttons.map(b => (
-          <tr>
-            <td><input
-                class="input"
-                type="number"
-                name="page"
-                placeholder="1"
-                value={b.page}
-              /></td>
-            <td><input
-                class="input"
-                type="number"
-                name="row"
-                placeholder="0"
-                value={b.row}
-              /></td>
-            <td><input
-                class="input"
-                type="number"
-                name="col"
-                placeholder="0"
-                value={b.col}
-              /></td>
-            <td><input
+      <div class="box">
+        <form hx-post="/settings" hx-swap="none">
+          <h2 class="subtitle">General</h2>
+          <div class="field">
+            <label for="infoText">General information text</label>
+            <div class="control">
+              <input
                 class="input"
                 type="text"
-                name="variableName"
-                placeholder="shoutoutMessage1"
-                value={b.variableName}
-              /></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <div class="columns">
-      <div class="column is-1 mt-5">
-        <button class="button is-primary" type="submit">Submit</button>
-      </div>
-    </div>
-  </form>
-  </div>
-
-  <div class="box">
-  <h2 class="subtitle">Account settings</h2>
-  <form hx-post="/account/change" hx-target="#change-password-status" hx-swap="innerHTML">
-    <div class="field">
-      <label for="companionHost">Change password</label>
-      <div class="control">
-        <div class="columns">
-          <div class="column">
-            <input
-              class="input"
-              type="password"
-              name="newPassword"
-              placeholder="new password"
-            />
+                name="infoText"
+                placeholder="info message"
+                value={settings.infoText}
+              />
+            </div>
           </div>
-          <div class="column">
-            <input
-              class="input"
-              type="password"
-              name="confirmPassword"
-              placeholder="confirm password"
-            />
+          <div class="field">
+            <label for="port">Server Port</label>
+            <div class="control">
+              <input
+                class="input"
+                type="number"
+                name="port"
+                placeholder="8080"
+                value={settings.port}
+                disabled
+              />
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="field">
+            <label class="checkbox">
+              <input
+                name="skipApproval"
+                type="checkbox"
+                value="on"
+                checked={!!settings.skipApproval}
+              />{" "}
+              Publish directly to screen, skipping approval
+            </label>
+          </div>
 
-  
-    <div class="columns">
-      <div class="column is-1">
-        <button class="button is-primary mt-5" type="submit">Submit</button>
-      </div>
-      <div class="column">
-        <p id="change-password-status" class="is-size-6 has-text-dark px-4 py-1"></p>
-      </div>
-    </div>
-  </form>
+          <h2 class="subtitle">Companion</h2>
+          <div class="field">
+            <label for="companionHost">IP Address</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="companionHost"
+                placeholder="0.0.0.0"
+                value={connections.host}
+              />
+            </div>
+          </div>
+          <div class="field">
+            <label for="companionPort">Port</label>
+            <div class="control">
+              <input
+                class="input"
+                type="number"
+                name="companionPort"
+                placeholder="8000"
+                value={connections.port}
+              />
+            </div>
+          </div>
+
+          <table class="table is-fullwidth">
+            <thead>
+              <th>Page</th>
+              <th>Row</th>
+              <th>Column</th>
+              <th>Custom Variable</th>
+            </thead>
+            <tbody>
+              {buttons.map((b) => (
+                <tr>
+                  <td>
+                    <input
+                      class="input"
+                      type="number"
+                      name="page"
+                      placeholder="1"
+                      value={b.page}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="input"
+                      type="number"
+                      name="row"
+                      placeholder="0"
+                      value={b.row}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="input"
+                      type="number"
+                      name="col"
+                      placeholder="0"
+                      value={b.col}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="input"
+                      type="text"
+                      name="variableName"
+                      placeholder="shoutoutMessage1"
+                      value={b.variableName}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="columns">
+            <div class="column is-1 mt-5">
+              <button class="button is-primary" type="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
 
-  <h2 class="subtitle">Database</h2>
-  <button
-    class="button is-danger"
-    hx-confirm="Delete all child codes? This can't be undone."
-    hx-delete="/request/delete/all"
-    hx-swap="none"
-  >Delete all requested child codes</button>
-</div>
-</Layout>
-)
+      <div class="box">
+        <h2 class="subtitle">Account settings</h2>
+        <form
+          hx-post="/account/change"
+          hx-target="#change-password-status"
+          hx-swap="innerHTML"
+        >
+          <div class="field">
+            <label for="companionHost">Change password</label>
+            <div class="control">
+              <div class="columns">
+                <div class="column">
+                  <input
+                    class="input"
+                    type="password"
+                    name="newPassword"
+                    placeholder="new password"
+                  />
+                </div>
+                <div class="column">
+                  <input
+                    class="input"
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="confirm password"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column is-1">
+              <button class="button is-primary mt-5" type="submit">
+                Submit
+              </button>
+            </div>
+            <div class="column">
+              <p
+                id="change-password-status"
+                class="is-size-6 has-text-dark px-4 py-1"
+              ></p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <h2 class="subtitle">Database</h2>
+      <button
+        class="button is-danger"
+        hx-confirm="Delete all child codes? This can't be undone."
+        hx-delete="/request/delete/all"
+        hx-swap="none"
+      >
+        Delete all requested child codes
+      </button>
+    </div>
+  </Layout>
+);
