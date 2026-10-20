@@ -48,7 +48,7 @@ class CompanionDriver {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: childCode,
+            body: JSON.stringify(childCode),
           },
         );
       } catch (err) {
