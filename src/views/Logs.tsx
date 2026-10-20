@@ -26,7 +26,7 @@ export const LogsPage = ({
           <th>Child number</th>
           <th>Note</th>
           <th>Status</th>
-          <th>Delete</th>
+          <th>Actions</th>
         </thead>
         <tbody id="childcodes">
           {/* Bug below: decision tree for <CodeRow> assumes auth and logs cannot be true at the same time */}

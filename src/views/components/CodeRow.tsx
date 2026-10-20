@@ -38,12 +38,22 @@ export const CodeRow = ({
           </button>
         </>
       ) : logs ? (
-        <button
-          class="delete is-medium"
-          hx-delete={`/request/delete/${childCode.childCode}`}
-          hx-target={`#code-${childCode.childCode}`}
-          hx-swap="delete"
-        ></button>
+        <>
+          <button
+            class="button is-primary"
+            hx-post={`/request/approve/${childCode.childCode}`}
+            hx-target={`#status-${childCode.childCode}`}
+            hx-swap="outerHTML"
+          >
+            Retrigger
+          </button>
+          <button
+            class="delete is-medium"
+            hx-delete={`/request/delete/${childCode.childCode}`}
+            hx-target={`#code-${childCode.childCode}`}
+            hx-swap="delete"
+          ></button>
+        </>
       ) : (
         <>&dash;</>
       )}
